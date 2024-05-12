@@ -47,16 +47,25 @@ function evaluateExpression(expression, environment = {}) {
                 }
                 return evaluateExpression(body, lambdaEnvironment);
             };
-        case 'apply':
-            const func = evaluateExpression(args[0], environment);
-            const funcArgs = args[1].map(arg => evaluateExpression(arg, environment));
-            return func(...funcArgs);
         case '=':
             if (args.length !== 2) {
                 throw new Error('Equality operator expects 2 arguments');
             }
             return evaluateExpression(args[0], environment) === evaluateExpression(args[1], environment);
+        case 'define':
+            if (args.length !== 2 || typeof args[0] !== 'string') {
+                throw new Error('Define operator expects a variable name and a value');
+            }
+            environment[args[0]] = evaluateExpression(args[1], environment);
+            return environment[args[0]];
         default:
-            throw new Error('Unknown operator: ' + operator);
+            // Check if it's a function call
+            const func = evaluateExpression(operator, environment);
+            const funcArgs = args.map(arg => evaluateExpression(arg, environment));
+            if (typeof func === 'function') {
+                return func(...funcArgs);
+            } else {
+                throw new Error('Unknown operator or function: ' + operator);
+            }
     }
 }
