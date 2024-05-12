@@ -30,11 +30,13 @@ function parseFromDom(element) {
         } else {
             // 获取子节点的data-type属性
             const type = child.dataset.type;
-            // 将 type 的第一个字母转为大写
-            const trans = (type[0].toUpperCase() + type.slice(1));
-            const v = window[trans](child.textContent.trim());
-            result.push(v);
+            result.push(parseTyped(child.textContent.trim(), type));
         }
     });
     return result;
+}
+function parseTyped(v, t) {
+    // 将 type 的第一个字母转为大写
+    const trans = (t[0].toUpperCase() + t.slice(1));
+    return window[trans](v);
 }

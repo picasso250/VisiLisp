@@ -89,7 +89,12 @@
             <div>
                 <button id="moveUp">上移</button>
                 <button id="moveDown">下移</button>
+            </div>
+            <div>
                 <button id="delete">删除</button>
+                <br>
+                <input type="text" id="forAdd">
+                <button id="add">增加</button>
             </div>
         </div>
     </div>
@@ -155,14 +160,14 @@
 
                 modalSubmit.onclick = function () {
                     const v = modalInput.value;
-                    target.textContent = v;
-                    target.dataset.type = typeSelect.value;
+                    const t = typeSelect.value;
+                    target.textContent = parseTyped(v, t);
+                    target.dataset.type = t;
                     hideModal();
                 }
             }
             const moveUp = document.getElementById('moveUp');
             const moveDown = document.getElementById('moveDown');
-            const delBtn = document.getElementById('delete');
             moveUp.onclick = function () {
                 // 获取当前选中的项
                 const selectedItem = target;
@@ -192,6 +197,7 @@
                 hideModal();
             }
 
+            const delBtn = document.getElementById('delete');
             // Event listener for delete button
             delBtn.onclick = function () {
                 // 获取当前选中的项
@@ -202,7 +208,24 @@
 
                 hideModal();
             }
-
+            const addBtn = document.getElementById('add');
+            addBtn.onclick = function () {
+                const forAddContent = document.getElementById("forAdd").value.trim();
+                if (forAddContent === "") {
+                    target.appendChild(makeElement({ tag: "div", classes: ['ast'] }))
+                } else {
+                    const vs = forAddContent.split(/\s+/).map(item => {
+                        const num = parseFloat(item);
+                        return isNaN(num) ? item : num;
+                    });
+                    if (vs.length === 1) {
+                        target.appendChild(renderAst(vs[0]));
+                    } else {
+                        target.appendChild(renderAst(vs));
+                    }
+                }
+                hideModal();
+            }
         });
 
         // When the user clicks anywhere outside of the modal, close it
