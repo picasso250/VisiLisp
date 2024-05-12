@@ -1,5 +1,9 @@
-function evaluateExpression(expression) {
+function evaluateExpression(expression, environment = {}) {
     if (!Array.isArray(expression)) {
+        // Check if it's a variable
+        if (typeof expression === 'string') {
+            return environment[expression];
+        }
         return expression;
     }
 
@@ -8,38 +12,52 @@ function evaluateExpression(expression) {
 
     switch (operator) {
         case '+':
-            return args.reduce((acc, val) => acc + evaluateExpression(val), 0);
+            return args.reduce((acc, val) => acc + evaluateExpression(val, environment), 0);
         case '-':
             if (args.length === 1) {
-                return -evaluateExpression(args[0]);
+                return -evaluateExpression(args[0], environment);
             } else if (args.length === 2) {
-                return evaluateExpression(args[0]) - evaluateExpression(args[1]);
+                return evaluateExpression(args[0], environment) - evaluateExpression(args[1], environment);
             } else {
                 throw new Error('Subtraction operator expects 1 or 2 arguments');
             }
         case '*':
-            return args.reduce((acc, val) => acc * evaluateExpression(val), 1);
+            return args.reduce((acc, val) => acc * evaluateExpression(val, environment), 1);
         case '/':
             if (args.length === 2) {
-                return evaluateExpression(args[0]) / evaluateExpression(args[1]);
+                return evaluateExpression(args[0], environment) / evaluateExpression(args[1], environment);
             } else {
                 throw new Error('Division operator expects 2 arguments');
             }
         case 'cond':
             for (let i = 0; i < args.length; i += 2) {
-                if (evaluateExpression(args[i])) {
-                    return evaluateExpression(args[i + 1]);
+                if (evaluateExpression(args[i], environment)) {
+                    return evaluateExpression(args[i + 1], environment);
                 }
             }
             throw new Error('No true condition found in cond expression');
+        case 'lambda':
+            // Create a closure by capturing the current environment
+            const parameters = args[0];
+            const body = args[1];
+            return function(...lambdaArgs) {
+                const lambdaEnvironment = {...environment};
+                for (let i = 0; i < parameters.length; i++) {
+                    lambdaEnvironment[parameters[i]] = lambdaArgs[i];
+                }
+                return evaluateExpression(body, lambdaEnvironment);
+            };
+        case 'apply':
+            const func = evaluateExpression(args[0], environment);
+            const funcArgs = args[1].map(arg => evaluateExpression(arg, environment));
+            return func(...funcArgs);
         default:
             throw new Error('Unknown operator: ' + operator);
     }
 }
 
-// Test
-console.log(evaluateExpression(['+', 1, 2])); // Output: 3
-console.log(evaluateExpression(['-', 5])); // Output: -5
-console.log(evaluateExpression(['*', 2, 3])); // Output: 6
-console.log(evaluateExpression(['/', 10, 2])); // Output: 5
-console.log(evaluateExpression(['cond', true, 1, false, 2, true, 3])); // Output: 1
+// Test lambda and apply
+const addOne = evaluateExpression(['lambda', ['x'], ['+', 'x', 1]]);
+console.log(addOne(5)); // Output: 6
+
+console.log(evaluateExpression(['apply', addOne, [5]])); // Output: 6
