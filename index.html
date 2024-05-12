@@ -44,7 +44,7 @@
             sqrt_2_program,
             ['sqrt-2']
         ];
-            console.log(JSON.stringify(code))
+        console.log(JSON.stringify(code))
 
         renderCode(code);
         function insertListItem() {
@@ -70,7 +70,7 @@
         function renderCode(code) {
             code.forEach((c) => {
                 coderoot.appendChild(renderAst(c));
-            })
+            });
         }
         function renderAst(ast) {
             if (typeof ast === "string" || typeof ast === "number" || typeof ast === "boolean") {
@@ -95,11 +95,7 @@
             Array.from(element.children).forEach(child => {
                 if (child.tagName === 'DIV') {
                     const children = parseFromDom(child);
-                    if (children.length > 0) {
-                        result.push(children);
-                    }else{
-                        result.push([]);
-                    }
+                    result.push(children);
                 } else {
                     // 获取子节点的data-type属性
                     const type = child.dataset.type;
@@ -111,6 +107,16 @@
             });
             return result;
         }
+        coderoot.addEventListener("click", function (event) {
+            console.log(event.target);
+            const target = event.target;
+            if (target.tagName === "SPAN") {
+                const v = prompt("修改: " + target.textContent);
+                // 将目标元素的文本内容更新为v
+                if (v !== null)
+                    target.textContent = v;
+            }
+        })
     </script>
 </body>
 
