@@ -132,10 +132,11 @@
 
         // Modal functionality
         const modal = document.getElementById("myModal");
+        const termContrl = document.querySelector(".term_control");
         // When the user clicks on <span> (x), close the modal
         const spanClose = document.getElementsByClassName("close")[0];
         spanClose.onclick = function () {
-            modal.style.display = "none";
+            hideModal();
         }
         coderoot.addEventListener("click", function (event) {
             const target = event.target;
@@ -143,7 +144,6 @@
             console.log(target)
 
             if (target.tagName === "SPAN") {
-                const termContrl = document.querySelector(".term_control");
                 termContrl.style.display = "block";
 
                 const modalInput = document.getElementById("modalInput");
@@ -157,10 +157,8 @@
                     const v = modalInput.value;
                     target.textContent = v;
                     target.dataset.type = typeSelect.value;
-                    modal.style.display = "none";
+                    hideModal();
                 }
-
-                termContrl.style.display = "none";
             }
             const moveUp = document.getElementById('moveUp');
             const moveDown = document.getElementById('moveDown');
@@ -176,9 +174,9 @@
                 // 将选中项移动到前一个兄弟元素的前面
                 selectedItem.parentNode.insertBefore(selectedItem, prevSibling);
 
-                modal.style.display = "none";
+                hideModal();
             }
-            
+
             // Event listener for moveDown button
             moveDown.onclick = function () {
                 // 获取当前选中的项
@@ -191,7 +189,7 @@
                 // 将选中项移动到后一个兄弟元素的后面
                 selectedItem.parentNode.insertBefore(nextSibling, selectedItem);
 
-                modal.style.display = "none";
+                hideModal();
             }
 
             // Event listener for delete button
@@ -202,7 +200,7 @@
                 // 删除选中项
                 selectedItem.parentNode.removeChild(selectedItem);
 
-                modal.style.display = "none";
+                hideModal();
             }
 
         });
@@ -210,8 +208,12 @@
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
             if (event.target == modal) {
-                modal.style.display = "none";
+                hideModal();
             }
+        }
+        function hideModal() {
+            modal.style.display = "none";
+            termContrl.style.display = "none";
         }
     </script>
 </body>
