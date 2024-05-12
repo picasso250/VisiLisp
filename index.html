@@ -9,6 +9,12 @@
 
 <body>
     <style>
+        #coderoot {
+            border: 1px solid;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
         .ast {
             margin: 0;
             margin-left: 1em;
@@ -27,10 +33,31 @@
         .term {
             padding: 3px;
         }
+
+        .binaryop {
+            display: flex;
+            align-items: center;
+        }
+
+        /* 控制显示顺序 */
+        .binaryop>.ast:nth-child(1) {
+            order: 2;
+            /* 第一个子项显示顺序为2 */
+        }
+
+        .binaryop>.ast:nth-child(2) {
+            order: 1;
+            /* 第二个子项显示顺序为1 */
+        }
+
+        .binaryop>.ast:nth-child(3) {
+            order: 3;
+            /* 第二个子项显示顺序为1 */
+        }
     </style>
     <div id="coderoot">
     </div>
-    <button onclick="insertListItem()">add</button>
+    <!-- <button onclick="insertListItem()">add</button> -->
     <button id="runButton">运行</button>
     <div id="result"></div>
 
@@ -106,11 +133,7 @@
     <script src="sqrt2.js"></script>
     <script>
         const coderoot = document.getElementById('coderoot');
-        code = [
-            sqrt_2_program,
-            ['sqrt-2']
-        ];
-
+        code = [sqrt_2_program, ['sqrt-2']];
         renderCode(code);
         console.log(JSON.stringify(code))
 
