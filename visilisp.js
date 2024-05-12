@@ -51,6 +51,11 @@ function evaluateExpression(expression, environment = {}) {
             const func = evaluateExpression(args[0], environment);
             const funcArgs = args[1].map(arg => evaluateExpression(arg, environment));
             return func(...funcArgs);
+        case '=':
+            if (args.length !== 2) {
+                throw new Error('Equality operator expects 2 arguments');
+            }
+            return evaluateExpression(args[0], environment) === evaluateExpression(args[1], environment);
         default:
             throw new Error('Unknown operator: ' + operator);
     }
