@@ -73,3 +73,11 @@ function evaluateExpression(expression, environment) {
             }
     }
 }
+
+function evaluateExpressions(list, environment) {
+    var result;
+    list.forEach(item => {
+        result = evaluateExpression(item, environment);
+    });
+    return result;
+}

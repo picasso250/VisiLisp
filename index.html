@@ -26,13 +26,66 @@
 
         .term {
             padding: 3px;
-        }
+        }        
     </style>
     <div id="coderoot">
     </div>
     <button onclick="insertListItem()">add</button>
     <button id="runButton">运行</button>
     <div id="result"></div>
+
+    <!-- Modal -->
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <select id="typeSelect">
+                <option value="string">String</option>
+                <option value="number">Number</option>
+                <option value="boolean">Boolean</option>
+            </select>
+            <br><br>
+            <input type="text" id="modalInput">
+            <button id="modalSubmit">Submit</button>
+        </div>
+    </div>
 
     <script src="env0.js"></script>
     <script src="visilisp.js"></script>
@@ -47,6 +100,8 @@
         ];
 
         renderCode(code);
+        console.log(JSON.stringify(code))
+
         function insertListItem() {
             let newItem = makeElement({
                 tag: "div",
@@ -59,6 +114,7 @@
         document.getElementById("runButton").addEventListener("click", function () {
             // 获取代码
             const code = parseFromDom(coderoot);
+            console.log(JSON.stringify(code))
 
             // 对代码进行求值
             var result = evaluateExpressions(code, env0);
@@ -66,15 +122,39 @@
             // 显示结果
             document.getElementById("result").textContent = result;
         });
-        
+
+        // Modal functionality
         coderoot.addEventListener("click", function (event) {
-            console.log(event.target);
             const target = event.target;
             if (target.tagName === "SPAN") {
-                const v = prompt("修改: " + target.textContent);
-                // 将目标元素的文本内容更新为v
-                if (v !== null)
+                const modal = document.getElementById("myModal");
+                const modalInput = document.getElementById("modalInput");
+                const modalSubmit = document.getElementById("modalSubmit");
+                const typeSelect = document.getElementById("typeSelect");
+
+                modal.style.display = "block";
+                typeSelect.value = target.dataset.type;
+                modalInput.value = target.textContent;
+
+                modalSubmit.onclick = function () {
+                    const v = modalInput.value;
                     target.textContent = v;
+                    target.dataset.type = typeSelect.value;
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks on <span> (x), close the modal
+                const spanClose = document.getElementsByClassName("close")[0];
+                spanClose.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
             }
         });
     </script>
