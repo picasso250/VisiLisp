@@ -92,4 +92,9 @@ describe("evaluateExpression", function () {
         }).toThrowError("Variable not found: unknown");
     });
 
+    it("should handle quote operator", function () {
+        // Test quote operator
+        expect(evaluateExpression(['quote', ['x', 'y', 'z']], {})).toEqual(['x', 'y', 'z']);
+    });
+
 });

@@ -1,4 +1,3 @@
-
 function evaluateExpression(expression, environment) {
 
     if (!Array.isArray(expression)) {
@@ -58,6 +57,11 @@ function evaluateExpression(expression, environment) {
 
             environment[name] = finalValue;
             return finalValue;
+        case 'quote':
+            if (args.length !== 1) {
+                throw new Error('Quote operator expects 1 argument');
+            }
+            return args[0]; // Simply return the operand without evaluation
         default:
             // Check if it's a function call
             const func = evaluateExpression(operator, environment);
@@ -68,12 +72,4 @@ function evaluateExpression(expression, environment) {
                 throw new Error('Unknown operator or function: ' + operator);
             }
     }
-}
-
-function evaluateExpressions(list, environment) {
-    var result;
-    list.forEach(item => {
-        result = evaluateExpression(item, environment);
-    });
-    return result;
 }
