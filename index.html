@@ -1,11 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>visitree</title>
 </head>
+
 <body>
+    <style>
+        .ast {
+            border: 1px solid grey;
+            border-radius: 5px;
+            margin: 0;
+            margin-left: 1em;
+            padding: 3px;
+        }
+
+        .ast.head {
+            margin-left: 3px;
+        }
+
+        .term {
+            padding: 3px;
+        }
+    </style>
+    <div id="coderoot">
+    </div>
+    <button onclick="insertListItem()">add</button>
+    <button id="runButton">运行</button>
+    <div id="result"></div>
+
+    <script src="env0.js"></script>
     <script src="visilisp.js"></script>
+    <script src="makeElement.js"></script>
+    <script>
+        const coderoot = document.getElementById('coderoot');
+        code = [
+            ['define', 'sqrt-2',
+                ['define', 'improve', ['lambda', ['guess'],
+                    ['/', ['+', 'guess', ['/', 2, 'guess']], 2]
+                ]],
+                ['define', 'good-enough?', ['lambda', ['guess'],
+                    ['<', ['abs', ['-', ['*', 'guess', 'guess'], 2]], 0.0001]
+                ]],
+                ['define', 'sqrt-iter', ['lambda', ['guess'],
+                    ['cond', ['good-enough?', 'guess'], 'guess', true, ['sqrt-iter', ['improve', 'guess']]]
+                ]],
+                ['lambda', [],
+                    ['sqrt-iter', 1.0]
+                ]
+            ],
+            ['sqrt-2']
+        ];
+
+        renderCode(code);
+        function insertListItem() {
+            let newItem = makeElement({
+                tag: "div",
+                text: prompt("type"),
+            });
+            // 在 coderoot 中插入新的列表项
+            document.getElementById('coderoot').appendChild(newItem);
+        }
+        // 当点击按钮时执行的函数
+        document.getElementById("runButton").addEventListener("click", function () {
+            // 获取代码
+            var code = document.getElementById("coderoot").textContent;
+
+
+            // 对代码进行求值
+            var result = evaluateExpressions(code, env0);
+
+            // 显示结果
+            document.getElementById("result").textContent = result;
+        });
+        function renderCode(code) {
+            code.forEach((c) => {
+                coderoot.appendChild(renderAst(c));
+            })
+        }
+        function renderAst(ast) {
+            if (typeof ast === "string" || typeof ast === "number" || typeof ast === "boolean") {
+                return makeElement({
+                    tag: "span",
+                    text: ast.toString(),
+                    classes: ['term']
+                });
+            }
+            const divs = ast.map(renderAst);
+            if (divs[0])
+                divs[0].classList.add("head");
+            return makeElement({
+                tag: "div",
+                children: divs,
+                classes: ['ast', ast[0]]
+            });
+        }
+    </script>
 </body>
+
 </html>
