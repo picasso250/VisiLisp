@@ -5,7 +5,7 @@ for (let op in env0) {
     }
 }
 
-function renderCode(code) {
+function renderCode(coderoot,code) {
     code.forEach((c) => {
         coderoot.appendChild(renderAst(c));
     });
@@ -22,7 +22,6 @@ function renderAst(ast) {
     const classes = ['ast', 'len' + ast.length];
     const divs = ast.map(renderAst);
     if (divs[0]) {
-        divs[0].classList.add("head");
         if (typeof ast[0] === "string") {
             classes.push(ast[0]);
             if (binaryOperators.has(ast[0]))

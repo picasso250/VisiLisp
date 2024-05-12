@@ -26,7 +26,7 @@
             border-radius: 3px;
         }
 
-        .ast.head {
+        .ast:first-child{
             margin-left: 3px;
         }
 
@@ -81,7 +81,7 @@
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 30%;
+            width: 70%;
             border-radius: 5px;
         }
 
@@ -103,6 +103,7 @@
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
+            <div id="codeShow"></div>
             <div class="term_control" style="display: none;">
                 <select id="typeSelect">
                     <option value="string">String</option>
@@ -111,7 +112,7 @@
                 </select>
                 <br><br>
                 <input type="text" id="modalInput">
-                <button id="modalSubmit">Submit</button>
+                <button id="modalSubmit">修改</button>
             </div>
             <div>
                 <button id="moveUp">上移</button>
@@ -121,7 +122,7 @@
                 <button id="delete">删除</button>
                 <br>
                 <input type="text" id="forAdd">
-                <button id="add">增加</button>
+                <button id="add">追加</button>
             </div>
         </div>
     </div>
@@ -134,17 +135,9 @@
     <script>
         const coderoot = document.getElementById('coderoot');
         code = [sqrt_2_program, ['sqrt-2']];
-        renderCode(code);
+        renderCode(coderoot, code);
         console.log(JSON.stringify(code))
 
-        function insertListItem() {
-            let newItem = makeElement({
-                tag: "div",
-                text: prompt("type"),
-            });
-            // 在 coderoot 中插入新的列表项
-            document.getElementById('coderoot').appendChild(newItem);
-        }
         // 当点击按钮时执行的函数
         document.getElementById("runButton").addEventListener("click", function () {
             // 获取代码
@@ -166,12 +159,14 @@
         spanClose.onclick = function () {
             hideModal();
         }
+        const codeShow = document.getElementById('codeShow');
         coderoot.addEventListener("click", function (event) {
             const target = event.target;
             modal.style.display = "block";
             console.log(target)
 
             if (target.tagName === "SPAN") {
+                codeShow.textContent = target.textContent;
                 termContrl.style.display = "block";
 
                 const modalInput = document.getElementById("modalInput");
@@ -188,6 +183,10 @@
                     target.dataset.type = t;
                     hideModal();
                 }
+            } else {
+                const targetCode = parseFromDom(target);
+                codeShow.innerHTML = '';
+                codeShow.appendChild(renderAst(targetCode));
             }
             const moveUp = document.getElementById('moveUp');
             const moveDown = document.getElementById('moveDown');
