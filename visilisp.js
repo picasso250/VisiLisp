@@ -55,9 +55,3 @@ function evaluateExpression(expression, environment = {}) {
             throw new Error('Unknown operator: ' + operator);
     }
 }
-
-// Test lambda and apply
-const addOne = evaluateExpression(['lambda', ['x'], ['+', 'x', 1]]);
-console.log(addOne(5)); // Output: 6
-
-console.log(evaluateExpression(['apply', addOne, [5]])); // Output: 6

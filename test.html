@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jasmine Test</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.8.0/jasmine.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.8.0/jasmine.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.8.0/jasmine-html.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.8.0/boot.min.js"></script>
+  <script src="visilisp.js"></script> <!-- Include your JavaScript file here -->
+</head>
+<body>
+  <script type="text/javascript">
+    describe("evaluateExpression", function() {
+      it("should add two numbers", function() {
+        expect(evaluateExpression(['+', 1, 2])).toEqual(3);
+      });
+
+      it("should subtract two numbers", function() {
+        expect(evaluateExpression(['-', 5])).toEqual(-5);
+      });
+
+      it("should multiply two numbers", function() {
+        expect(evaluateExpression(['*', 2, 3])).toEqual(6);
+      });
+
+      it("should divide two numbers", function() {
+        expect(evaluateExpression(['/', 10, 2])).toEqual(5);
+      });
+
+      it("should throw error for unknown operator", function() {
+        expect(function() {
+          evaluateExpression(['unknown', 1, 2]);
+        }).toThrowError("Unknown operator: unknown");
+      });
+
+    });
+  </script>
+</body>
+</html>
