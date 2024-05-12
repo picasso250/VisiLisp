@@ -20,6 +20,21 @@ describe("evaluateExpression", function () {
         expect(addOne(5)).toEqual(6);
     });
 
+    it("should evaluate conditional expressions", function () {
+        let env = Object.assign({}, env0);
+        // Define a conditional expression
+        evaluateExpression(['define', 'result',
+            ['cond',
+                [true, 1],
+                [false, 2],
+                [true, 3]
+            ]
+        ], env);
+    
+        // Test the conditional expression
+        expect(evaluateExpression('result', env)).toEqual(1);
+    });    
+
     it("should test closure support", function () {
         const makeCounter = evaluateExpression(['lambda', ['x'],
             ['lambda', [],
@@ -55,8 +70,8 @@ describe("evaluateExpression", function () {
         evaluateExpression(['define', 'fact',
             ['lambda', ['n'],
                 ['cond',
-                    ['=', 'n', 0], 1,
-                    true, ['*', 'n', ['fact', ['-', 'n', 1]]]
+                    [['=', 'n', 0], 1],
+                    [true, ['*', 'n', ['fact', ['-', 'n', 1]]]]
                 ]
             ]
         ], env);
@@ -70,7 +85,6 @@ describe("evaluateExpression", function () {
         // Test factorial of 5
         expect(evaluateExpression(['fact', 5], env)).toEqual(120);
     });
-
 
     it("should throw error for Variable not found", function () {
         expect(function () {

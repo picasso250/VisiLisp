@@ -18,9 +18,11 @@ function evaluateExpression(expression, environment) {
 
     switch (operator) {
         case 'cond':
-            for (let i = 0; i < args.length; i += 2) {
-                if (evaluateExpression(args[i], environment)) {
-                    return evaluateExpression(args[i + 1], environment);
+            for (let i = 0; i < args.length; i++) {
+                const condition = args[i][0];
+                const expression = args[i][1];
+                if (evaluateExpression(condition, environment)) {
+                    return evaluateExpression(expression, environment);
                 }
             }
             throw new Error('No true condition found in cond expression');
