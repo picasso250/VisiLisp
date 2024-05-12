@@ -1,34 +1,22 @@
 describe("evaluateExpression", function () {
     it("should add two numbers", function () {
-        expect(evaluateExpression(['+', 1, 2])).toEqual(3);
-    });
-
-    it("should subtract one number", function () {
-        expect(evaluateExpression(['-', 5])).toEqual(-5);
+        expect(evaluateExpression(['+', 1, 2], env0)).toEqual(3);
     });
 
     it("should multiply two numbers", function () {
-        expect(evaluateExpression(['*', 2, 3])).toEqual(6);
+        expect(evaluateExpression(['*', 2, 3], env0)).toEqual(6);
     });
 
     it("should divide two numbers", function () {
-        expect(evaluateExpression(['/', 10, 2])).toEqual(5);
-    });
-
-    it("should add three numbers", function () {
-        expect(evaluateExpression(['+', 1, 2, 3])).toEqual(6);
-    });
-
-    it("should multiply three numbers", function () {
-        expect(evaluateExpression(['*', 2, 3, 4])).toEqual(24);
+        expect(evaluateExpression(['/', 10, 2], env0)).toEqual(5);
     });
 
     it("should subtract two numbers", function () {
-        expect(evaluateExpression(['-', 10, 5])).toEqual(5);
+        expect(evaluateExpression(['-', 10, 5], env0)).toEqual(5);
     });
 
     it("should evaluate a lambda function", function () {
-        const addOne = evaluateExpression(['lambda', ['x'], ['+', 'x', 1]]);
+        const addOne = evaluateExpression(['lambda', ['x'], ['+', 'x', 1]], env0);
         expect(addOne(5)).toEqual(6);
     });
 
@@ -37,7 +25,7 @@ describe("evaluateExpression", function () {
             ['lambda', [],
                 ['+', 'x', 1]
             ]
-        ]);
+        ], env0);
 
         const counter1 = makeCounter(3);
         const counter2 = makeCounter(9);
@@ -47,7 +35,7 @@ describe("evaluateExpression", function () {
     });
 
     it("should define and access variables", function () {
-        let env = {};
+        let env = Object.assign({}, env0);
         // Define a variable 'x' with value 5
         evaluateExpression(['define', 'x', 5], env);
 
@@ -62,7 +50,7 @@ describe("evaluateExpression", function () {
     });
 
     it("should calculate factorial recursively", function () {
-        let env = {};
+        let env = Object.assign({}, env0);
         // Define factorial function recursively
         evaluateExpression(['define', 'fact',
             ['lambda', ['n'],
@@ -86,7 +74,7 @@ describe("evaluateExpression", function () {
 
     it("should throw error for Variable not found", function () {
         expect(function () {
-            evaluateExpression(['unknown', 1, 2]);
+            evaluateExpression(['unknown', 1, 2], env0);
         }).toThrowError("Variable not found: unknown");
     });
 

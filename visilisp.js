@@ -1,4 +1,13 @@
-function evaluateExpression(expression, environment = {}) {
+const env0 = {
+    '+': (a, b) => a + b,
+    '-': (a, b) => a - b,
+    '*': (a, b) => a * b,
+    '/': (a, b) => a / b,
+    '=': (a, b) => a === b,
+};
+
+function evaluateExpression(expression, environment) {
+
     if (!Array.isArray(expression)) {
         // Check if it's a variable
         if (typeof expression === 'string') {
@@ -15,24 +24,6 @@ function evaluateExpression(expression, environment = {}) {
     var args = expression.slice(1);
 
     switch (operator) {
-        case '+':
-            return args.reduce((acc, val) => acc + evaluateExpression(val, environment), 0);
-        case '-':
-            if (args.length === 1) {
-                return -evaluateExpression(args[0], environment);
-            } else if (args.length === 2) {
-                return evaluateExpression(args[0], environment) - evaluateExpression(args[1], environment);
-            } else {
-                throw new Error('Subtraction operator expects 1 or 2 arguments');
-            }
-        case '*':
-            return args.reduce((acc, val) => acc * evaluateExpression(val, environment), 1);
-        case '/':
-            if (args.length === 2) {
-                return evaluateExpression(args[0], environment) / evaluateExpression(args[1], environment);
-            } else {
-                throw new Error('Division operator expects 2 arguments');
-            }
         case 'cond':
             for (let i = 0; i < args.length; i += 2) {
                 if (evaluateExpression(args[i], environment)) {
@@ -44,8 +35,8 @@ function evaluateExpression(expression, environment = {}) {
             // Create a closure by capturing the current environment
             const parameters = args[0];
             const body = args[1];
-            return function(...lambdaArgs) {
-                const lambdaEnvironment = {...environment};
+            return function (...lambdaArgs) {
+                const lambdaEnvironment = { ...environment };
                 for (let i = 0; i < parameters.length; i++) {
                     lambdaEnvironment[parameters[i]] = lambdaArgs[i];
                 }
@@ -57,11 +48,21 @@ function evaluateExpression(expression, environment = {}) {
             }
             return evaluateExpression(args[0], environment) === evaluateExpression(args[1], environment);
         case 'define':
-            if (args.length !== 2 || typeof args[0] !== 'string') {
-                throw new Error('Define operator expects a variable name and a value');
+            if (args.length < 2 || typeof args[0] !== 'string') {
+                throw new Error('Define operator expects a variable name and one or more expressions');
             }
-            environment[args[0]] = evaluateExpression(args[1], environment);
-            return environment[args[0]];
+            const name = args[0];
+            const expressions = args.slice(1, -1);
+            const value = args[args.length - 1];
+
+            // Evaluate each expression in order
+            expressions.forEach(expr => evaluateExpression(expr, environment));
+
+            // Evaluate the final value
+            const finalValue = evaluateExpression(value, environment);
+
+            environment[name] = finalValue;
+            return finalValue;
         default:
             // Check if it's a function call
             const func = evaluateExpression(operator, environment);
