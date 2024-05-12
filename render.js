@@ -5,7 +5,8 @@ for (let op in env0) {
     }
 }
 
-function renderCode(coderoot,code) {
+function renderCode(coderoot, code) {
+    coderoot.innerHTML = "";
     code.forEach((c) => {
         coderoot.appendChild(renderAst(c));
     });

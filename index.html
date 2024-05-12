@@ -58,7 +58,10 @@
     <div id="coderoot">
     </div>
     <button id="runButton">运行</button>
-    <button id="exportButton">导出</button>
+    <button id="exportButton">导出/复制</button>
+    <button id="saveButton">保存到本地</button>
+    <button id="loadButton">从本地load</button>
+    <button id="exampleButton">加载案例</button>
     <div id="result"></div>
 
     <!-- Modal -->
@@ -81,7 +84,7 @@
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 70%;
+            width: 90%;
             border-radius: 5px;
         }
 
@@ -134,9 +137,6 @@
     <script src="sqrt2.js"></script>
     <script>
         const coderoot = document.getElementById('coderoot');
-        code = [sqrt_2_program, ['sqrt-2']];
-        renderCode(coderoot, code);
-        console.log(JSON.stringify(code))
 
         // 当点击按钮时执行的函数
         document.getElementById("runButton").addEventListener("click", function () {
@@ -262,7 +262,7 @@
         }
         document.getElementById("exportButton").addEventListener("click", function () {
             const code = parseFromDom(coderoot);
-            console.log(JSON.stringify(code));
+            console.log(JSON.stringify(code,undefined,2));
             // to clipboard
             var textarea = document.createElement('textarea');
             textarea.value = JSON.stringify(code);
@@ -270,7 +270,26 @@
             textarea.select();
             document.execCommand("copy");
             document.body.removeChild(textarea);
-        })
+        });
+        document.getElementById("saveButton").addEventListener("click", function () {
+            const code = parseFromDom(coderoot);
+            localStorage.setItem("code", JSON.stringify(code));
+        });
+        document.getElementById("loadButton").addEventListener("click", function () {
+            try {
+                const code = JSON.parse(localStorage.getItem("code"));
+                coderoot.innerHTML = "";
+                renderCode(coderoot, code);
+            } catch (e) {
+                console.error("Failed to load from local storage");
+            }
+        });
+        document.getElementById("exampleButton").addEventListener("click", function () {
+            const code = [sqrt_2_program, ['sqrt-2']];
+            coderoot.innerHTML = "";
+            renderCode(coderoot, code);
+            console.log(JSON.stringify(code))
+        });
     </script>
 </body>
 
