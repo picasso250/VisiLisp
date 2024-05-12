@@ -1,9 +1,55 @@
 const env0 = {
-    '+': (a, b) => a + b,
-    '-': (a, b) => a - b,
-    '*': (a, b) => a * b,
-    '/': (a, b) => a / b,
-    '=': (a, b) => a === b,
+    '+': function (a, b) {
+        if (arguments.length !== 2) {
+            throw new Error('Addition operation requires exactly two arguments');
+        }
+        return a + b;
+    },
+    '-': function (a, b) {
+        if (arguments.length !== 2) {
+            throw new Error('Subtraction operation requires exactly two arguments');
+        }
+        return a - b;
+    },
+    '*': function (a, b) {
+        if (arguments.length !== 2) {
+            throw new Error('Multiplication operation requires exactly two arguments');
+        }
+        return a * b;
+    },
+    '/': function (a, b) {
+        if (arguments.length !== 2) {
+            throw new Error('Division operation requires exactly two arguments');
+        }
+        return a / b;
+    },
+    '=': function (a, b) {
+        if (arguments.length !== 2) {
+            throw new Error('Equality comparison requires exactly two arguments');
+        }
+        return a === b;
+    },
+    '<': function (a, b) {
+        if (arguments.length !== 2) {
+            throw new Error('Less than comparison requires exactly two arguments');
+        }
+        return a < b;
+    },
+    '>': function (a, b) {
+        if (arguments.length !== 2) {
+            throw new Error('Greater than comparison requires exactly two arguments');
+        }
+        return a > b;
+    },
+    'abs': function (num) {
+        if (arguments.length !== 1) {
+            throw new Error('Absolute value function requires exactly one argument');
+        }
+        if (num < 0) {
+            return -num;
+        }
+        return num;
+    }
 };
 
 function evaluateExpression(expression, environment) {
@@ -74,3 +120,23 @@ function evaluateExpression(expression, environment) {
             }
     }
 }
+
+const sqrt_2_program = ['define', 'sqrt-2',
+    ['define', 'improve', ['lambda', ['guess'],
+        ['/', ['+', 'guess', ['/', 2, 'guess']], 2]
+    ]],
+    ['define', 'good-enough?', ['lambda', ['guess'],
+        ['<', ['abs', ['-', ['*', 'guess', 'guess'], 2]], 0.0001]
+    ]],
+    ['define', 'sqrt-iter', ['lambda', ['guess'],
+        ['cond', ['good-enough?', 'guess'], 'guess', true, ['sqrt-iter', ['improve', 'guess']]]
+    ]],
+    ['lambda', [],
+        ['sqrt-iter', 1.0]
+    ]
+];
+
+evaluateExpression(sqrt_2_program, env0);
+let r = evaluateExpression(['sqrt-2'], env0);
+console.log(r)
+
