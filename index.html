@@ -10,11 +10,14 @@
 <body>
     <style>
         .ast {
-            border: 1px solid grey;
-            border-radius: 5px;
             margin: 0;
             margin-left: 1em;
             padding: 3px;
+        }
+
+        div.ast {
+            border: 1px solid grey;
+            border-radius: 3px;
         }
 
         .ast.head {
@@ -34,25 +37,14 @@
     <script src="env0.js"></script>
     <script src="visilisp.js"></script>
     <script src="makeElement.js"></script>
+    <script src="sqrt2.js"></script>
     <script>
         const coderoot = document.getElementById('coderoot');
         code = [
-            ['define', 'sqrt-2',
-                ['define', 'improve', ['lambda', ['guess'],
-                    ['/', ['+', 'guess', ['/', 2, 'guess']], 2]
-                ]],
-                ['define', 'good-enough?', ['lambda', ['guess'],
-                    ['<', ['abs', ['-', ['*', 'guess', 'guess'], 2]], 0.0001]
-                ]],
-                ['define', 'sqrt-iter', ['lambda', ['guess'],
-                    ['cond', ['good-enough?', 'guess'], 'guess', true, ['sqrt-iter', ['improve', 'guess']]]
-                ]],
-                ['lambda', [],
-                    ['sqrt-iter', 1.0]
-                ]
-            ],
+            sqrt_2_program,
             ['sqrt-2']
         ];
+            console.log(JSON.stringify(code))
 
         renderCode(code);
         function insertListItem() {
@@ -66,8 +58,8 @@
         // 当点击按钮时执行的函数
         document.getElementById("runButton").addEventListener("click", function () {
             // 获取代码
-            var code = document.getElementById("coderoot").textContent;
-
+            const code = parseFromDom(coderoot);
+            console.log(JSON.stringify(code))
 
             // 对代码进行求值
             var result = evaluateExpressions(code, env0);
@@ -85,7 +77,8 @@
                 return makeElement({
                     tag: "span",
                     text: ast.toString(),
-                    classes: ['term']
+                    classes: ['ast', 'term'],
+                    data: { "type": typeof ast },
                 });
             }
             const divs = ast.map(renderAst);
@@ -96,6 +89,27 @@
                 children: divs,
                 classes: ['ast', ast[0]]
             });
+        }
+        function parseFromDom(element) {
+            const result = [];
+            Array.from(element.children).forEach(child => {
+                if (child.tagName === 'DIV') {
+                    const children = parseFromDom(child);
+                    if (children.length > 0) {
+                        result.push(children);
+                    }else{
+                        result.push([]);
+                    }
+                } else {
+                    // 获取子节点的data-type属性
+                    const type = child.dataset.type;
+                    // 将 type 的第一个字母转为大写
+                    const trans = (type[0].toUpperCase() + type.slice(1));
+                    const v = window[trans](child.textContent.trim());
+                    result.push(v);
+                }
+            });
+            return result;
         }
     </script>
 </body>
