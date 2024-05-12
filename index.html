@@ -26,7 +26,7 @@
 
         .term {
             padding: 3px;
-        }        
+        }
     </style>
     <div id="coderoot">
     </div>
@@ -76,14 +76,21 @@
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
-            <select id="typeSelect">
-                <option value="string">String</option>
-                <option value="number">Number</option>
-                <option value="boolean">Boolean</option>
-            </select>
-            <br><br>
-            <input type="text" id="modalInput">
-            <button id="modalSubmit">Submit</button>
+            <div class="term_control" style="display: none;">
+                <select id="typeSelect">
+                    <option value="string">String</option>
+                    <option value="number">Number</option>
+                    <option value="boolean">Boolean</option>
+                </select>
+                <br><br>
+                <input type="text" id="modalInput">
+                <button id="modalSubmit">Submit</button>
+            </div>
+            <div>
+                <button id="moveUp">上移</button>
+                <button id="moveDown">下移</button>
+                <button id="delete">删除</button>
+            </div>
         </div>
     </div>
 
@@ -124,15 +131,25 @@
         });
 
         // Modal functionality
+        const modal = document.getElementById("myModal");
+        // When the user clicks on <span> (x), close the modal
+        const spanClose = document.getElementsByClassName("close")[0];
+        spanClose.onclick = function () {
+            modal.style.display = "none";
+        }
         coderoot.addEventListener("click", function (event) {
             const target = event.target;
+            modal.style.display = "block";
+            console.log(target)
+
             if (target.tagName === "SPAN") {
-                const modal = document.getElementById("myModal");
+                const termContrl = document.querySelector(".term_control");
+                termContrl.style.display = "block";
+
                 const modalInput = document.getElementById("modalInput");
                 const modalSubmit = document.getElementById("modalSubmit");
                 const typeSelect = document.getElementById("typeSelect");
 
-                modal.style.display = "block";
                 typeSelect.value = target.dataset.type;
                 modalInput.value = target.textContent;
 
@@ -143,20 +160,59 @@
                     modal.style.display = "none";
                 }
 
-                // When the user clicks on <span> (x), close the modal
-                const spanClose = document.getElementsByClassName("close")[0];
-                spanClose.onclick = function () {
-                    modal.style.display = "none";
-                }
-
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function (event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
+                termContrl.style.display = "none";
             }
+            const moveUp = document.getElementById('moveUp');
+            const moveDown = document.getElementById('moveDown');
+            const delBtn = document.getElementById('delete');
+            moveUp.onclick = function () {
+                // 获取当前选中的项
+                const selectedItem = target;
+
+                // 获取选中项的前一个兄弟元素
+                const prevSibling = selectedItem.previousElementSibling;
+                if (!prevSibling) return; // 如果没有前一个兄弟元素，直接返回
+
+                // 将选中项移动到前一个兄弟元素的前面
+                selectedItem.parentNode.insertBefore(selectedItem, prevSibling);
+
+                modal.style.display = "none";
+            }
+            
+            // Event listener for moveDown button
+            moveDown.onclick = function () {
+                // 获取当前选中的项
+                const selectedItem = target;
+
+                // 获取选中项的后一个兄弟元素
+                const nextSibling = selectedItem.nextElementSibling;
+                if (!nextSibling) return; // 如果没有后一个兄弟元素，直接返回
+
+                // 将选中项移动到后一个兄弟元素的后面
+                selectedItem.parentNode.insertBefore(nextSibling, selectedItem);
+
+                modal.style.display = "none";
+            }
+
+            // Event listener for delete button
+            delBtn.onclick = function () {
+                // 获取当前选中的项
+                const selectedItem = target;
+
+                // 删除选中项
+                selectedItem.parentNode.removeChild(selectedItem);
+
+                modal.style.display = "none";
+            }
+
         });
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 
