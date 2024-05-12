@@ -9,67 +9,8 @@
   <script src="visilisp.js"></script>
 </head>
 <body>
-  <script type="text/javascript">
-    describe("evaluateExpression", function() {
-        it("should add two numbers", function() {
-        expect(evaluateExpression(['+', 1, 2])).toEqual(3);
-      });
-
-      it("should subtract two numbers", function() {
-        expect(evaluateExpression(['-', 5])).toEqual(-5);
-      });
-
-      it("should multiply two numbers", function() {
-        expect(evaluateExpression(['*', 2, 3])).toEqual(6);
-      });
-
-      it("should divide two numbers", function() {
-        expect(evaluateExpression(['/', 10, 2])).toEqual(5);
-      });
-
-      it("should add three numbers", function() {
-        expect(evaluateExpression(['+', 1, 2, 3])).toEqual(6);
-      });
-
-      it("should multiply three numbers", function() {
-        expect(evaluateExpression(['*', 2, 3, 4])).toEqual(24);
-      });
-
-      it("should subtract two numbers", function() {
-        expect(evaluateExpression(['-', 10, 5])).toEqual(5);
-      });
-
-      it("should evaluate a lambda function", function() {
-        const addOne = evaluateExpression(['lambda', ['x'], ['+', 'x', 1]]);
-        expect(addOne(5)).toEqual(6);
-      });
-
-      it("should apply a lambda function", function() {
-        const addOne = evaluateExpression(['lambda', ['x'], ['+', 'x', 1]]);
-        expect(evaluateExpression(['apply', addOne, [5]])).toEqual(6);
-      });
-
-      it("should test closure support", function() {
-        const makeCounter = evaluateExpression(['lambda', ['x'], 
-          ['lambda', [],
-            ['+', 'x', 1]
-          ]
-        ]);
-
-        const counter1 = makeCounter(3);
-        const counter2 = makeCounter(9);
-
-        expect(counter1()).toEqual(4);
-        expect(counter2()).toEqual(10);
-      });
-
-      it("should throw error for unknown operator", function() {
-        expect(function() {
-          evaluateExpression(['unknown', 1, 2]);
-        }).toThrowError("Unknown operator: unknown");
-      });
-
-    });
-  </script>
+  <script type="text/javascript" src="test.js">
+    
+</script>
 </body>
 </html>

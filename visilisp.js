@@ -2,7 +2,11 @@ function evaluateExpression(expression, environment = {}) {
     if (!Array.isArray(expression)) {
         // Check if it's a variable
         if (typeof expression === 'string') {
-            return environment[expression];
+            if (environment.hasOwnProperty(expression)) {
+                return environment[expression];
+            } else {
+                throw new Error('Variable not found: ' + expression);
+            }
         }
         return expression;
     }
