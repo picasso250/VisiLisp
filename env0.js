@@ -26,6 +26,8 @@ const env0 = {
     'in': (a, b) => a in b, // In operator
     'delete': (a, b) => delete a[b], // Delete operator
     '.': (a, b) => a[b],
+    Math: Math,
+    'abs':(a)=>Math.abs(a),
 };
 
 for (const name in env0) {

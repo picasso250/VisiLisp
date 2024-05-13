@@ -15,6 +15,27 @@ function evaluateExpression(expression, environment) {
     var operator = expression[0];
     var args = expression.slice(1);
 
+    function buildLambda(parameters, body) {
+        return function (...lambdaArgs) {
+            const lambdaEnvironment = { ...environment };
+            for (let i = 0; i < parameters.length; i++) {
+                lambdaEnvironment[parameters[i]] = lambdaArgs[i];
+            }
+            return evaluateExpression(body, lambdaEnvironment);
+        };
+    }
+
+    function doDefine(name, expressions, value) {
+        // Evaluate each expression in order
+        expressions.forEach(expr => evaluateExpression(expr, environment));
+
+        // Evaluate the final value
+        const finalValue = evaluateExpression(value, environment);
+
+        environment[name] = finalValue;
+        return finalValue;
+    }
+
     switch (operator) {
         case 'cond':
             for (let i = 0; i < args.length; i++) {
@@ -29,13 +50,7 @@ function evaluateExpression(expression, environment) {
             // Create a closure by capturing the current environment
             const parameters = args[0];
             const body = args[1];
-            return function (...lambdaArgs) {
-                const lambdaEnvironment = { ...environment };
-                for (let i = 0; i < parameters.length; i++) {
-                    lambdaEnvironment[parameters[i]] = lambdaArgs[i];
-                }
-                return evaluateExpression(body, lambdaEnvironment);
-            };
+            return buildLambda(parameters, body);
         case 'define':
             if (args.length < 2 || typeof args[0] !== 'string') {
                 throw new Error('Define operator expects a variable name and one or more expressions');
@@ -43,15 +58,7 @@ function evaluateExpression(expression, environment) {
             const name = args[0];
             const expressions = args.slice(1, -1);
             const value = args[args.length - 1];
-
-            // Evaluate each expression in order
-            expressions.forEach(expr => evaluateExpression(expr, environment));
-
-            // Evaluate the final value
-            const finalValue = evaluateExpression(value, environment);
-
-            environment[name] = finalValue;
-            return finalValue;
+            return doDefine(name, expressions, value);
         case 'quote':
             if (args.length !== 1) {
                 throw new Error('Quote operator expects 1 argument');
