@@ -1,10 +1,14 @@
+:root {
+    --margin-value: 5px;
+}
+
 #coderoot {
-    border: 1px solid grey;
-    padding: 5px;
+    border-left: 1px solid grey;
+    padding: 10px;
 }
 
 #coderoot > .ast {
-    margin-left: 3px;
+    margin-left: var(--margin-value);
 }
 
 .ast {
@@ -13,11 +17,13 @@
     align-items: center;
     margin: 0;
     margin-left: 1em;
-    padding: 3px;
+    padding: 2px;
     /* make it code friendly */
     font-family: "Courier New", Courier, monospace;
 }
-
+span.ast{
+    padding: 1px;
+}
 div.ast {
     border: 1px solid grey;
     border-top: 0;
@@ -25,7 +31,7 @@ div.ast {
 }
 
 .ast:first-child {
-    margin-left: 3px;
+    margin-left: var(--margin-value);
 }
 
 .term {
