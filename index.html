@@ -32,6 +32,7 @@
 
         .term {
             padding: 3px;
+            border:1px dotted grey;
         }
 
         .binaryop {
@@ -232,7 +233,7 @@
             }
             const addBtn = document.getElementById('add');
             addBtn.onclick = function () {
-                const forAddContent = document.getElementById("forAdd").value.trim();
+                const forAddContent = document.getElementById("forAdd").value;
                 if (forAddContent === "") {
                     target.appendChild(makeElement({ tag: "div", classes: ['ast'] }))
                 } else {
