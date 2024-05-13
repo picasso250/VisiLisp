@@ -1,6 +1,6 @@
 const binaryOperators = new Set();
 for (let op in env0) {
-    if (env0[op].length === 2) {
+    if (env0[op].argsCount === 2) {
         binaryOperators.add(op);
     }
 }

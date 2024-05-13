@@ -30,8 +30,9 @@
         }
 
         div.ast {
-            border-left: 1px solid grey;
-            border-bottom: 1px solid grey;
+            border: 1px solid grey;
+            border-top: 0;
+            border-right: 0;
         }
 
         .ast:first-child {
@@ -88,14 +89,17 @@
         .quote>*:first-child {
             color: #a27b0d;
         }
+
         .operator>*:first-child {
             color: #1d97c0;
         }
-        .number{
+
+        .number {
             color: #0723c8;
         }
-        .boolean{
-            color:#c60c7c;
+
+        .boolean {
+            color: #c60c7c;
         }
     </style>
     <div id="coderoot">
@@ -125,7 +129,7 @@
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
-            padding: 20px;
+            padding: 10px;
             border: 1px solid #888;
             width: 90%;
             border-radius: 5px;
