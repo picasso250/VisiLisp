@@ -22,6 +22,7 @@ spanClose.onclick = function () {
     hideModal();
 }
 const codeShow = document.getElementById('codeShow');
+const codeSource = document.getElementById('codeSource');
 const addBtn = document.getElementById('add');
 const modalInput = document.getElementById("modalInput");
 const changeBtn = document.getElementById('change');
@@ -61,6 +62,7 @@ coderoot.addEventListener("click", function (event) {
     if (target.tagName === "SPAN") {
         showByClass("term_control");
         codeShow.textContent = target.textContent;
+        codeSource.textContent = target.textContent;
 
         const typeSelect = document.getElementById("typeSelect");
         typeSelect.value = target.dataset.type;
@@ -93,6 +95,7 @@ coderoot.addEventListener("click", function (event) {
         const targetCode = parseFromDom(target);
         codeShow.innerHTML = '';
         codeShow.appendChild(renderAst(briefAst(targetCode)));
+        codeSource.textContent = JSON.stringify(targetCode);
     }
     replaceBtn.onclick = function () {
         const forChangeContent = modalInput.value;
