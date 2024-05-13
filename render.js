@@ -24,7 +24,8 @@ function renderAst(ast) {
     const divs = ast.map(renderAst);
     if (divs[0]) {
         if (typeof ast[0] === "string") {
-            classes.push(ast[0]);
+            if (ast[0] && /^[\w-]+$/.test(ast[0]))
+                classes.push(ast[0]);
             if (binaryOperators.has(ast[0]))
                 classes.push("binaryop");
         }
