@@ -6,7 +6,7 @@ const sqrt_2_program = ['define', ['sqrt-2'],
         ['<', ['abs', ['-', ['*', 'guess', 'guess'], 2]], 0.0001]
     ],
     ['define', ['sqrt-iter', 'guess'],
-        ['cond', [['good-enough?', 'guess'], 'guess'], [true, ['sqrt-iter', ['improve', 'guess']]]]
+        ['if', ['good-enough?', 'guess'], 'guess', ['sqrt-iter', ['improve', 'guess']]]
     ],
     ['sqrt-iter', 1.0]
 ];

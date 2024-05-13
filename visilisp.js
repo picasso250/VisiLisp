@@ -1,7 +1,6 @@
 function evaluateExpression(expression, environment) {
 
     if (!Array.isArray(expression)) {
-        // Check if it's a variable
         if (typeof expression === 'string') {
             if (environment.hasOwnProperty(expression)) {
                 return environment[expression];
@@ -26,17 +25,26 @@ function evaluateExpression(expression, environment) {
     }
 
     function doDefine(name, expressions, value) {
-        // Evaluate each expression in order
         expressions.forEach(expr => evaluateExpression(expr, environment));
-
-        // Evaluate the final value
         const finalValue = evaluateExpression(value, environment);
-
         environment[name] = finalValue;
         return finalValue;
     }
 
     switch (operator) {
+        case 'quote':
+            if (args.length !== 1) {
+                throw new Error('Quote operator expects 1 argument');
+            }
+            return args[0];
+        case 'if':
+            const condition = evaluateExpression(args[0], environment);
+            const trueBranch = args[1];
+            const falseBranch = args[2];
+            return evaluateExpression(condition ?
+                evaluateExpression(trueBranch, environment) :
+                evaluateExpression(falseBranch, environment),
+                environment);
         case 'cond':
             for (let i = 0; i < args.length; i++) {
                 const condition = args[i][0];
@@ -47,13 +55,11 @@ function evaluateExpression(expression, environment) {
             }
             throw new Error('No true condition found in cond expression');
         case 'lambda':
-            // Create a closure by capturing the current environment
             const parameters = args[0];
             const body = args[1];
             return buildLambda(parameters, body);
         case 'define':
             if (Array.isArray(args[0])) {
-                // Define a function
                 const funcDef = args[0];
                 if (funcDef.length < 1 || typeof funcDef[0] !== 'string') {
                     throw new Error('Function definition expects a function name and one or more arguments');
@@ -64,7 +70,6 @@ function evaluateExpression(expression, environment) {
                 const body = args[args.length - 1];
                 return doDefine(funcName, expressions, buildLambda(parameters, body));
             } else {
-                // Define a variable
                 if (args.length < 2 || typeof args[0] !== 'string') {
                     throw new Error('Define operator expects a variable name and one or more expressions');
                 }
@@ -73,13 +78,7 @@ function evaluateExpression(expression, environment) {
                 const value = args[args.length - 1];
                 return doDefine(name, expressions, value);
             }
-        case 'quote':
-            if (args.length !== 1) {
-                throw new Error('Quote operator expects 1 argument');
-            }
-            return args[0]; // Simply return the operand without evaluation
         default:
-            // Check if it's a function call
             const func = evaluateExpression(operator, environment);
             const funcArgs = args.map(arg => evaluateExpression(arg, environment));
             if (typeof func === 'function') {
