@@ -7,18 +7,64 @@
     <title>VisiLisp</title>
     <link rel="stylesheet" href="code.css">
     <link rel="stylesheet" href="modal.css">
+
+    <style>
+        /* 设置按钮的基本样式 */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* 设置按钮的默认背景色和文字颜色 */
+        .button-default {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        /* 当鼠标悬停在按钮上时改变背景色 */
+        .button-default:hover {
+            background-color: #2980b9;
+        }
+
+        /* 设置一个特殊样式的按钮 */
+        .special-button {
+            background-color: #e74c3c;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .special-button:hover {
+            background-color: #c0392b;
+        }
+
+        .controls .button {
+            display: block;
+            margin: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <div id="coderoot">
     </div>
-    <button id="runButton">运行</button>
-    <button id="exportButton">导出/复制</button>
-    <button id="saveButton">保存到本地</button>
-    <button id="loadButton">从本地load</button>
-    <button id="exampleButton">加载示例</button>
-    <a href="syntax.md" target="_blank">语法文档</a>
-    <a href="operators.md" target="_blank">运算符文档</a>
+
+    <div class="controls">
+        <button class="button special-button" id="runButton">运行</button>
+        <button class="button" id="exportButton">导出/复制</button>
+        <button class="button" id="saveButton">保存到本地</button>
+        <button class="button" id="loadButton">从本地load</button>
+        <button class="button" id="exampleButton">加载示例</button>
+        <a href="syntax.md" target="_blank">语法文档</a>
+        <a href="operators.md" target="_blank">运算符文档</a>
+    </div>
+
     <div id="result">
         欢迎使用 VisiLisp，如果你感到很头大，请点击“加载示例”来学习如何求根号2.
     </div>
