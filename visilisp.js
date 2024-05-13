@@ -36,11 +36,6 @@ function evaluateExpression(expression, environment) {
                 }
                 return evaluateExpression(body, lambdaEnvironment);
             };
-        case '=':
-            if (args.length !== 2) {
-                throw new Error('Equality operator expects 2 arguments');
-            }
-            return evaluateExpression(args[0], environment) === evaluateExpression(args[1], environment);
         case 'define':
             if (args.length < 2 || typeof args[0] !== 'string') {
                 throw new Error('Define operator expects a variable name and one or more expressions');

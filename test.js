@@ -15,6 +15,26 @@ describe("evaluateExpression", function () {
         expect(evaluateExpression(['-', 10, 5], env0)).toEqual(5);
     });
 
+    it("should check if two numbers are equal", function () {
+        expect(evaluateExpression(['=', 3, 3], env0)).toEqual(true);
+        expect(evaluateExpression(['=', 3, 4], env0)).toEqual(false);
+    });
+
+    it("should check if first number is less than the second number", function () {
+        expect(evaluateExpression(['<', 2, 3], env0)).toEqual(true);
+        expect(evaluateExpression(['<', 3, 2], env0)).toEqual(false);
+    });
+
+    it("should check if first number is greater than the second number", function () {
+        expect(evaluateExpression(['>', 3, 2], env0)).toEqual(true);
+        expect(evaluateExpression(['>', 2, 3], env0)).toEqual(false);
+    });
+
+    it("should handle quote operator", function () {
+        // Test quote operator
+        expect(evaluateExpression(['quote', ['x', 'y', 'z']], {})).toEqual(['x', 'y', 'z']);
+    });
+    
     it("should evaluate a lambda function", function () {
         const addOne = evaluateExpression(['lambda', ['x'], ['+', 'x', 1]], env0);
         expect(addOne(5)).toEqual(6);
@@ -92,9 +112,14 @@ describe("evaluateExpression", function () {
         }).toThrowError("Variable not found: unknown");
     });
 
-    it("should handle quote operator", function () {
-        // Test quote operator
-        expect(evaluateExpression(['quote', ['x', 'y', 'z']], {})).toEqual(['x', 'y', 'z']);
+    it("should throw error if incorrect number of arguments is provided", function () {
+        expect(() => evaluateExpression(['+', 1], env0)).toThrowError("+ requires exactly 2 arguments");
+        expect(() => evaluateExpression(['-', 5, 3, 2], env0)).toThrowError("- requires exactly 2 arguments");
+        expect(() => evaluateExpression(['*', 4], env0)).toThrowError("* requires exactly 2 arguments");
+        expect(() => evaluateExpression(['/', 10, 2, 3], env0)).toThrowError("/ requires exactly 2 arguments");
+        expect(() => evaluateExpression(['=', 3], env0)).toThrowError("= requires exactly 2 arguments");
+        expect(() => evaluateExpression(['<', 2, 3, 4], env0)).toThrowError("< requires exactly 2 arguments");
+        expect(() => evaluateExpression(['>', 3], env0)).toThrowError("> requires exactly 2 arguments");
     });
 
 });
