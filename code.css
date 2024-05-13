@@ -75,24 +75,30 @@ div.ast {
     align-items: center;
 }
 
+.ast > span:first-child {
+    color: #1d97c0;
+}
+
 .define > *:first-child,
 .cond > *:first-child,
 .if > *:first-child,
 .lamda > *:first-child,
 .quote > *:first-child {
-    color: #a27b0d;
+    color: #a27b0d !important;
 }
+
 .comment .ast {
-    color: grey;
+    color: grey !important;
     font-weight: 100;
+    font-size: small;
 }
 
 .operator > *:first-child {
-    color: #1d97c0;
+    color: #115c92 !important;
 }
 
 .number {
-    color: #0723c8;
+    color: #1a57cc;
 }
 
 .boolean {

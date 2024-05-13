@@ -48,12 +48,18 @@
             margin: 5px;
         }
 
-        .controls{
+        .controls {
             display: flex;
             flex-wrap: wrap;
         }
-        .controls a{
+
+        .controls a {
             margin: 5px;
+        }
+
+        #result {
+            font-family: "Courier New", Courier, monospace;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -61,7 +67,9 @@
 <body>
     <div id="coderoot">
     </div>
-
+    <div id="result">
+        欢迎使用 VisiLisp，如果你感到很头大，请点击“加载示例”来学习如何求根号2.
+    </div>
     <div class="controls">
         <button class="button special-button" id="runButton">运行</button>
         <button class="button" id="exportButton">导出/复制</button>
@@ -70,10 +78,6 @@
         <button class="button" id="exampleButton">加载示例</button>
         <a href="syntax.md" target="_blank">语法文档</a>
         <a href="operators.md" target="_blank">运算符文档</a>
-    </div>
-
-    <div id="result">
-        欢迎使用 VisiLisp，如果你感到很头大，请点击“加载示例”来学习如何求根号2.
     </div>
 
     <!-- Modal -->

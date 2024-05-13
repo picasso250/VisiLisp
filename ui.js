@@ -221,6 +221,7 @@ document.getElementById("exampleButton").addEventListener("click", function () {
     const code = [
         ['comment', "使用牛顿迭代法求根号二"],
         sqrt_2_program,
+        ['comment', "运行函数"],
         ['sqrt-2']
     ];
     coderoot.innerHTML = "";
@@ -228,6 +229,7 @@ document.getElementById("exampleButton").addEventListener("click", function () {
     console.log(JSON.stringify(code))
     resultBox.textContent = "现在，点击“运行”按钮"
 });
+// document.getElementById("exampleButton").click();
 function briefAst(ast) {
     if (Array.isArray(ast)) {
         return ast.map(a => Array.isArray(a) ?
