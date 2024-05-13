@@ -35,6 +35,10 @@ describe("evaluateExpression", function () {
         expect(evaluateExpression(['quote', ['x', 'y', 'z']], {})).toEqual(['x', 'y', 'z']);
     });
     
+    it("should handle comment", function () {
+        expect(evaluateExpression(['comment', 'This is a comment'], {})).toEqual(undefined);
+    });
+    
     it("should evaluate a lambda function", function () {
         const addOne = evaluateExpression(['lambda', ['x'], ['+', 'x', 1]], env0);
         expect(addOne(5)).toEqual(6);

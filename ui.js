@@ -218,7 +218,11 @@ document.getElementById("loadButton").addEventListener("click", function () {
     }
 });
 document.getElementById("exampleButton").addEventListener("click", function () {
-    const code = [sqrt_2_program, ['sqrt-2']];
+    const code = [
+        ['comment', "使用牛顿迭代法求根号二"],
+        sqrt_2_program,
+        ['sqrt-2']
+    ];
     coderoot.innerHTML = "";
     renderCode(coderoot, code);
     console.log(JSON.stringify(code))

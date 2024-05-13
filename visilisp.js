@@ -78,6 +78,9 @@ function evaluateExpression(expression, environment) {
                 const value = args[args.length - 1];
                 return doDefine(name, expressions, value);
             }
+        case 'comment': // 添加了 comment 关键字的处理
+            // 注释不执行任何操作，直接返回 undefined
+            return undefined;
         default:
             const func = evaluateExpression(operator, environment);
             const funcArgs = args.map(arg => evaluateExpression(arg, environment));
