@@ -45,8 +45,7 @@
         }
 
         .controls .button {
-            display: block;
-            margin: 10px;
+            margin: 5px;
         }
 
         .controls{
@@ -85,17 +84,17 @@
             <div id="codeShow"></div>
             <div id="codeSource"></div>
             <div class="term_control">
-                <select id="typeSelect">
+                <select id="typeSelect" title="数据类型">
                     <option value="string">String</option>
                     <option value="number">Number</option>
                     <option value="boolean">Boolean</option>
                 </select>
             </div>
             <div>
-                <input type="text" id="modalInput">
-                <button id="change" class="term_control">修改</button>
-                <button id="replace">替换</button>
-                <button id="add" class="list_control">追加</button>
+                <input type="text" id="modalInput" placeholder="完整表达式或者简写">
+                <button class="button" type="button" id="change" class="term_control">修改</button>
+                <button class="button" type="button" id="replace">替换</button>
+                <button class="button" type="button" id="add" class="list_control">追加</button>
                 <br>
                 <div id="suggestionDiv" style="display: none;">
                     <div>define</div>
@@ -105,11 +104,11 @@
                 </div>
             </div>
             <div>
-                <button id="moveUp">上移</button>
-                <button id="moveDown">下移</button>
+                <button class="button" type="button" id="moveUp">上移</button>
+                <button class="button" type="button" id="moveDown">下移</button>
             </div>
             <div>
-                <button id="delete">删除</button>
+                <button class="button" type="button" id="delete">删除</button>
             </div>
         </div>
     </div>

@@ -47,17 +47,14 @@ div.ast {
 /* 控制显示顺序 */
 .binaryop > .ast:nth-child(1) {
     order: 2;
-    /* 第一个子项显示顺序为2 */
 }
 
 .binaryop > .ast:nth-child(2) {
     order: 1;
-    /* 第二个子项显示顺序为1 */
 }
 
 .binaryop > .ast:nth-child(3) {
     order: 3;
-    /* 第二个子项显示顺序为1 */
 }
 
 .term_control,
