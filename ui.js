@@ -25,8 +25,35 @@ const codeShow = document.getElementById('codeShow');
 const addBtn = document.getElementById('add');
 const modalInput = document.getElementById("modalInput");
 const changeBtn = document.getElementById('change');
+const suggestionDiv = document.getElementById("suggestionDiv");
+
+modalInput.addEventListener("focus", () => {
+    // 显示备选 div
+    suggestionDiv.style.display = "block";
+});
+
+modalInput.addEventListener("blur", () => {
+    // 隐藏备选 div
+    setTimeout(function () {
+        suggestionDiv.style.display = "none";
+    }, 100);
+});
+
+suggestionDiv.addEventListener("click", function (event) {
+    console.log("click")
+    const target = event.target;
+    const text = target.textContent;
+    // insert to modalInput
+    modalInput.value += text;
+    modalInput.focus();
+    suggestionDiv.style.display = "none";
+});
+
 coderoot.addEventListener("click", function (event) {
     const target = event.target;
+    if (target === coderoot) {
+        changeBtn.style.display = "none";
+    }
     modal.style.display = "block";
     console.log(target)
 
@@ -124,7 +151,7 @@ coderoot.addEventListener("click", function (event) {
         }
         hideModal();
     }
-    
+
 });
 // 函数：将字符串转换为数字、true、false 或保持原样
 function parseInput(input) {
@@ -147,6 +174,7 @@ window.onclick = function (event) {
     }
 }
 function hideModal() {
+    changeBtn.style.display = "";
     modal.style.display = "none";
     termContrl.style.display = "none";
     addBtn.style.display = "none";
