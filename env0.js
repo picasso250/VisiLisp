@@ -28,6 +28,81 @@ const env0 = {
     '.': (a, b) => a[b],
 };
 
+// Add Lisp functions
+env0['null?'] = (a) => a === null || a === undefined;
+env0['atom?'] = (a) => typeof a !== 'object';
+env0['list?'] = (a) => Array.isArray(a);
+
+// 带有错误处理的函数
+env0['car'] = (a) => {
+    if (!Array.isArray(a)) {
+        throw new Error('car expects a list as argument');
+    }
+    if (a.length === 0) {
+        throw new Error('car cannot be applied to an empty list');
+    }
+    return a[0];
+};
+
+env0['cdr'] = (a) => {
+    if (!Array.isArray(a)) {
+        throw new Error('cdr expects a list as argument');
+    }
+    if (a.length === 0) {
+        throw new Error('cdr cannot be applied to an empty list');
+    }
+    return a.slice(1);
+};
+
+env0['cons'] = (a, b) => {
+    if (b === null || b === undefined)
+        b = [];
+    if (!Array.isArray(b)) {
+        throw new Error('cons expects a list as second argument');
+    }
+    return [a, ...b];
+};
+
+env0['apply'] = (func, args) => {
+    if (typeof func !== 'function') {
+        throw new Error('apply expects a function as first argument');
+    }
+    if (!Array.isArray(args)) {
+        throw new Error('apply expects a list of arguments as second argument');
+    }
+    return func(...args);
+};
+
+env0['map'] = (func, list) => {
+    if (typeof func !== 'function') {
+        throw new Error('map expects a function as first argument');
+    }
+    if (!Array.isArray(list)) {
+        throw new Error('map expects a list as second argument');
+    }
+    return list.map(func);
+};
+
+env0['filter'] = (predicate, list) => {
+    if (typeof predicate !== 'function') {
+        throw new Error('filter expects a function as first argument');
+    }
+    if (!Array.isArray(list)) {
+        throw new Error('filter expects a list as second argument');
+    }
+    return list.filter(predicate);
+};
+
+env0['reduce'] = (func, list, initialValue) => {
+    if (typeof func !== 'function') {
+        throw new Error('reduce expects a function as first argument');
+    }
+    if (!Array.isArray(list)) {
+        throw new Error('reduce expects a list as second argument');
+    }
+    return list.reduce(func, initialValue);
+};
+
 for (const name in env0) {
     const f = env0[name];
     const length = f.length;
@@ -40,4 +115,8 @@ for (const name in env0) {
     env0[name].argsCount = length;
 }
 
+// 不定参函数
+env0['list'] = (...args) => args;
+
+// 内置对象
 env0["Math"] = Math;
