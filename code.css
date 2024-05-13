@@ -15,11 +15,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin: 0;
-    margin-left: 1em;
-    padding: 2px;
+    margin: 1px 0;
+    margin-left: 1rem;
+    padding: 1px;
     /* make it code friendly */
     font-family: "Courier New", Courier, monospace;
+    font-weight: bold;
 }
 span.ast{
     padding: 1px;
