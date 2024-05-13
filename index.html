@@ -32,7 +32,7 @@
 
         .term {
             padding: 3px;
-            border:1px dotted grey;
+            border: 1px dotted grey;
         }
 
         .binaryop {
@@ -127,6 +127,7 @@
                 <br>
                 <input type="text" id="forAdd">
                 <button id="add">追加</button>
+                <button id="replace">替换</button>
             </div>
         </div>
     </div>
@@ -237,10 +238,7 @@
                 if (forAddContent === "") {
                     target.appendChild(makeElement({ tag: "div", classes: ['ast'] }))
                 } else {
-                    const vs = forAddContent.split(/\s+/).map(item => {
-                        const num = parseFloat(item);
-                        return isNaN(num) ? item : num;
-                    });
+                    const vs = parseInput(forAddContent);
                     if (vs.length === 1) {
                         target.appendChild(renderAst(vs[0]));
                     } else {
@@ -249,7 +247,36 @@
                 }
                 hideModal();
             }
+            const replaceBtn = document.getElementById('replace');
+            replaceBtn.onclick = function () {
+                const forAddContent = document.getElementById("forAdd").value;
+                if (forAddContent === "") {
+                    target.parentNode.insertBefore(makeElement({ tag: "div", classes: ['ast'] }), target);
+                } else {
+                    const vs = parseInput(forAddContent);
+                    if (vs.length === 1) {
+                        target.parentNode.insertBefore(renderAst(vs[0]), target);
+                    } else {
+                        target.parentNode.insertBefore(renderAst(vs), target);
+                    }
+                }
+                target.parentNode.removeChild(target);
+                hideModal();
+            }
         });
+        // 函数：将字符串转换为数字、true、false 或保持原样
+        function parseInput(input) {
+            return input.split(/\s+/).map(item => {
+                if (item === "true") {
+                    return true;
+                } else if (item === "false") {
+                    return false;
+                } else {
+                    const num = parseFloat(item);
+                    return isNaN(num) ? item : num;
+                }
+            });
+        }
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
@@ -263,7 +290,7 @@
         }
         document.getElementById("exportButton").addEventListener("click", function () {
             const code = parseFromDom(coderoot);
-            console.log(JSON.stringify(code,undefined,2));
+            console.log(JSON.stringify(code, undefined, 2));
             // to clipboard
             var textarea = document.createElement('textarea');
             textarea.value = JSON.stringify(code);
