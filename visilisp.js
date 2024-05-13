@@ -52,13 +52,27 @@ function evaluateExpression(expression, environment) {
             const body = args[1];
             return buildLambda(parameters, body);
         case 'define':
-            if (args.length < 2 || typeof args[0] !== 'string') {
-                throw new Error('Define operator expects a variable name and one or more expressions');
+            if (Array.isArray(args[0])) {
+                // Define a function
+                const funcDef = args[0];
+                if (funcDef.length < 1 || typeof funcDef[0] !== 'string') {
+                    throw new Error('Function definition expects a function name and one or more arguments');
+                }
+                const funcName = funcDef[0];
+                const parameters = funcDef.slice(1);
+                const expressions = args.slice(1, -1);
+                const body = args[args.length - 1];
+                return doDefine(funcName, expressions, buildLambda(parameters, body));
+            } else {
+                // Define a variable
+                if (args.length < 2 || typeof args[0] !== 'string') {
+                    throw new Error('Define operator expects a variable name and one or more expressions');
+                }
+                const name = args[0];
+                const expressions = args.slice(1, -1);
+                const value = args[args.length - 1];
+                return doDefine(name, expressions, value);
             }
-            const name = args[0];
-            const expressions = args.slice(1, -1);
-            const value = args[args.length - 1];
-            return doDefine(name, expressions, value);
         case 'quote':
             if (args.length !== 1) {
                 throw new Error('Quote operator expects 1 argument');

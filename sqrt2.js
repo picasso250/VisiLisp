@@ -1,16 +1,14 @@
-const sqrt_2_program = ['define', 'sqrt-2',
-    ['define', 'improve', ['lambda', ['guess'],
+const sqrt_2_program = ['define', ['sqrt-2'],
+    ['define', ['improve', 'guess'],
         ['/', ['+', 'guess', ['/', 2, 'guess']], 2]
-    ]],
-    ['define', 'good-enough?', ['lambda', ['guess'],
+    ],
+    ['define', ['good-enough?', 'guess'],
         ['<', ['abs', ['-', ['*', 'guess', 'guess'], 2]], 0.0001]
-    ]],
-    ['define', 'sqrt-iter', ['lambda', ['guess'],
+    ],
+    ['define', ['sqrt-iter', 'guess'],
         ['cond', [['good-enough?', 'guess'], 'guess'], [true, ['sqrt-iter', ['improve', 'guess']]]]
-    ]],
-    ['lambda', [],
-        ['sqrt-iter', 1.0]
-    ]
+    ],
+    ['sqrt-iter', 1.0]
 ];
 
 evaluateExpression(sqrt_2_program, env0);
