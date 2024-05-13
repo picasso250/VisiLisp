@@ -25,6 +25,7 @@ const codeShow = document.getElementById('codeShow');
 const addBtn = document.getElementById('add');
 const modalInput = document.getElementById("modalInput");
 const changeBtn = document.getElementById('change');
+const replaceBtn = document.getElementById('replace');
 const suggestionDiv = document.getElementById("suggestionDiv");
 
 modalInput.addEventListener("focus", () => {
@@ -52,14 +53,14 @@ suggestionDiv.addEventListener("click", function (event) {
 coderoot.addEventListener("click", function (event) {
     const target = event.target;
     if (target === coderoot) {
-        changeBtn.style.display = "none";
+        replaceBtn.style.display = "none";
     }
     modal.style.display = "block";
     console.log(target)
 
     if (target.tagName === "SPAN") {
+        showByClass("term_control");
         codeShow.textContent = target.textContent;
-        termContrl.style.display = "block";
 
         const typeSelect = document.getElementById("typeSelect");
         typeSelect.value = target.dataset.type;
@@ -73,27 +74,40 @@ coderoot.addEventListener("click", function (event) {
             hideModal();
         }
     } else {
-        changeBtn.onclick = function () {
-            const forChangeContent = modalInput.value;
-            if (forChangeContent === "") {
-                target.parentNode.insertBefore(makeElement({ tag: "div", classes: ['ast'] }), target);
+        showByClass("list_control");
+        addBtn.onclick = function () {
+            const forAddContent = modalInput.value;
+            if (forAddContent === "") {
+                target.appendChild(makeElement({ tag: "div", classes: ['ast'] }))
             } else {
-                const vs = parseInput(forChangeContent);
+                const vs = parseInput(forAddContent);
                 if (vs.length === 1) {
-                    target.parentNode.insertBefore(renderAst(vs[0]), target);
+                    target.appendChild(renderAst(vs[0]));
                 } else {
-                    target.parentNode.insertBefore(renderAst(vs), target);
+                    target.appendChild(renderAst(vs));
                 }
             }
-            target.parentNode.removeChild(target);
             hideModal();
         }
-
-        addBtn.style.display = "";
 
         const targetCode = parseFromDom(target);
         codeShow.innerHTML = '';
         codeShow.appendChild(renderAst(briefAst(targetCode)));
+    }
+    replaceBtn.onclick = function () {
+        const forChangeContent = modalInput.value;
+        if (forChangeContent === "") {
+            target.parentNode.insertBefore(makeElement({ tag: "div", classes: ['ast'] }), target);
+        } else {
+            const vs = parseInput(forChangeContent);
+            if (vs.length === 1) {
+                target.parentNode.insertBefore(renderAst(vs[0]), target);
+            } else {
+                target.parentNode.insertBefore(renderAst(vs), target);
+            }
+        }
+        target.parentNode.removeChild(target);
+        hideModal();
     }
     const moveUp = document.getElementById('moveUp');
     const moveDown = document.getElementById('moveDown');
@@ -137,20 +151,7 @@ coderoot.addEventListener("click", function (event) {
 
         hideModal();
     }
-    addBtn.onclick = function () {
-        const forAddContent = modalInput.value;
-        if (forAddContent === "") {
-            target.appendChild(makeElement({ tag: "div", classes: ['ast'] }))
-        } else {
-            const vs = parseInput(forAddContent);
-            if (vs.length === 1) {
-                target.appendChild(renderAst(vs[0]));
-            } else {
-                target.appendChild(renderAst(vs));
-            }
-        }
-        hideModal();
-    }
+
 
 });
 // 函数：将字符串转换为数字、true、false 或保持原样
@@ -174,10 +175,20 @@ window.onclick = function (event) {
     }
 }
 function hideModal() {
-    changeBtn.style.display = "";
     modal.style.display = "none";
-    termContrl.style.display = "none";
-    addBtn.style.display = "none";
+    hideByClass("term_control");
+    hideByClass("list_control");
+    replaceBtn.style.display = "";
+}
+function hideByClass(cls) {
+    Array
+        .from(document.getElementsByClassName(cls))
+        .forEach(element => element.style.display = "none");
+}
+function showByClass(cls) {
+    Array
+        .from(document.getElementsByClassName(cls))
+        .forEach(element => element.style.display = "block");
 }
 document.getElementById("exportButton").addEventListener("click", function () {
     const code = parseFromDom(coderoot);

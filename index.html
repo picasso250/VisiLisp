@@ -55,6 +55,11 @@
             order: 3;
             /* 第二个子项显示顺序为1 */
         }
+
+        .term_control,
+        .list_control {
+            display: none;
+        }
     </style>
     <div id="coderoot">
     </div>
@@ -108,7 +113,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id="codeShow"></div>
-            <div class="term_control" style="display: none;">
+            <div class="term_control">
                 <select id="typeSelect">
                     <option value="string">String</option>
                     <option value="number">Number</option>
@@ -117,8 +122,9 @@
             </div>
             <div>
                 <input type="text" id="modalInput">
-                <button id="change">修改/替换</button>
-                <button id="add" style="display: none;">追加</button>
+                <button id="change" class="term_control">修改</button>
+                <button id="replace" >替换</button>
+                <button id="add" class="list_control">追加</button>
                 <br>
                 <div id="suggestionDiv" style="display: none;">
                     <div>define</div>
