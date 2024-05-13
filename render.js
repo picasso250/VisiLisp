@@ -16,7 +16,7 @@ function renderAst(ast) {
         return makeElement({
             tag: "span",
             text: ast.toString(),
-            classes: ['ast', 'term'],
+            classes: ['ast', 'term', typeof ast],
             data: { "type": typeof ast },
         });
     }
@@ -26,6 +26,9 @@ function renderAst(ast) {
         if (typeof ast[0] === "string") {
             if (ast[0] && /^[\w-]+$/.test(ast[0]))
                 classes.push(ast[0]);
+            else
+                classes.push("operator");
+
             if (binaryOperators.has(ast[0]))
                 classes.push("binaryop");
         }
