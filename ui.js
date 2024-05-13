@@ -22,6 +22,9 @@ spanClose.onclick = function () {
     hideModal();
 }
 const codeShow = document.getElementById('codeShow');
+const addBtn = document.getElementById('add');
+const modalInput = document.getElementById("modalInput");
+const changeBtn = document.getElementById('change');
 coderoot.addEventListener("click", function (event) {
     const target = event.target;
     modal.style.display = "block";
@@ -31,14 +34,11 @@ coderoot.addEventListener("click", function (event) {
         codeShow.textContent = target.textContent;
         termContrl.style.display = "block";
 
-        const modalInput = document.getElementById("modalInput");
-        const modalSubmit = document.getElementById("modalSubmit");
         const typeSelect = document.getElementById("typeSelect");
-
         typeSelect.value = target.dataset.type;
         modalInput.value = target.textContent;
 
-        modalSubmit.onclick = function () {
+        changeBtn.onclick = function () {
             const v = modalInput.value;
             const t = typeSelect.value;
             target.textContent = parseTyped(v, t);
@@ -46,6 +46,24 @@ coderoot.addEventListener("click", function (event) {
             hideModal();
         }
     } else {
+        changeBtn.onclick = function () {
+            const forChangeContent = modalInput.value;
+            if (forChangeContent === "") {
+                target.parentNode.insertBefore(makeElement({ tag: "div", classes: ['ast'] }), target);
+            } else {
+                const vs = parseInput(forChangeContent);
+                if (vs.length === 1) {
+                    target.parentNode.insertBefore(renderAst(vs[0]), target);
+                } else {
+                    target.parentNode.insertBefore(renderAst(vs), target);
+                }
+            }
+            target.parentNode.removeChild(target);
+            hideModal();
+        }
+
+        addBtn.style.display = "";
+
         const targetCode = parseFromDom(target);
         codeShow.innerHTML = '';
         codeShow.appendChild(renderAst(briefAst(targetCode)));
@@ -92,9 +110,8 @@ coderoot.addEventListener("click", function (event) {
 
         hideModal();
     }
-    const addBtn = document.getElementById('add');
     addBtn.onclick = function () {
-        const forAddContent = document.getElementById("forAdd").value;
+        const forAddContent = modalInput.value;
         if (forAddContent === "") {
             target.appendChild(makeElement({ tag: "div", classes: ['ast'] }))
         } else {
@@ -107,22 +124,7 @@ coderoot.addEventListener("click", function (event) {
         }
         hideModal();
     }
-    const replaceBtn = document.getElementById('replace');
-    replaceBtn.onclick = function () {
-        const forAddContent = document.getElementById("forAdd").value;
-        if (forAddContent === "") {
-            target.parentNode.insertBefore(makeElement({ tag: "div", classes: ['ast'] }), target);
-        } else {
-            const vs = parseInput(forAddContent);
-            if (vs.length === 1) {
-                target.parentNode.insertBefore(renderAst(vs[0]), target);
-            } else {
-                target.parentNode.insertBefore(renderAst(vs), target);
-            }
-        }
-        target.parentNode.removeChild(target);
-        hideModal();
-    }
+    
 });
 // 函数：将字符串转换为数字、true、false 或保持原样
 function parseInput(input) {
@@ -147,6 +149,7 @@ window.onclick = function (event) {
 function hideModal() {
     modal.style.display = "none";
     termContrl.style.display = "none";
+    addBtn.style.display = "none";
 }
 document.getElementById("exportButton").addEventListener("click", function () {
     const code = parseFromDom(coderoot);
