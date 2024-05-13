@@ -48,7 +48,7 @@ coderoot.addEventListener("click", function (event) {
     } else {
         const targetCode = parseFromDom(target);
         codeShow.innerHTML = '';
-        codeShow.appendChild(renderAst(targetCode));
+        codeShow.appendChild(renderAst(briefAst(targetCode)));
     }
     const moveUp = document.getElementById('moveUp');
     const moveDown = document.getElementById('moveDown');
@@ -178,3 +178,10 @@ document.getElementById("exampleButton").addEventListener("click", function () {
     renderCode(coderoot, code);
     console.log(JSON.stringify(code))
 });
+function briefAst(ast) {
+    if (Array.isArray(ast)) {
+        return ast.map(e => Array.isArray(e) ? '...' : e);
+    } else {
+        return ast;
+    }
+}
