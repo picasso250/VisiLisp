@@ -222,11 +222,13 @@ document.getElementById("exampleButton").addEventListener("click", function () {
     coderoot.innerHTML = "";
     renderCode(coderoot, code);
     console.log(JSON.stringify(code))
-    resultBox.textContent="现在，点击“运行”按钮"
+    resultBox.textContent = "现在，点击“运行”按钮"
 });
 function briefAst(ast) {
     if (Array.isArray(ast)) {
-        return ast.map(e => Array.isArray(e) ? '...' : e);
+        return ast.map(a => Array.isArray(a) ?
+            a.map(e => Array.isArray(e) ? '...' : e) :
+            a);
     } else {
         return ast;
     }
