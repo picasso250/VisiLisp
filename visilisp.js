@@ -11,8 +11,8 @@ function evaluateExpression(expression, environment) {
         return expression;
     }
 
-    var operator = expression[0];
-    var args = expression.slice(1);
+    let operator = expression[0];
+    let args = expression.slice(1);
 
     function buildLambda(parameters, body) {
         return function (...lambdaArgs) {
@@ -90,7 +90,7 @@ function evaluateExpression(expression, environment) {
 }
 
 function evaluateExpressions(list, environment) {
-    var result;
+    let result;
     list.forEach(item => {
         result = evaluateExpression(item, environment);
     });
