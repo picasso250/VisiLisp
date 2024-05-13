@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>visitree</title>
+    <title>VisiLisp</title>
     <link rel="stylesheet" href="code.css">
     <link rel="stylesheet" href="modal.css">
 </head>
@@ -16,10 +16,12 @@
     <button id="exportButton">导出/复制</button>
     <button id="saveButton">保存到本地</button>
     <button id="loadButton">从本地load</button>
-    <button id="exampleButton">加载案例</button>
+    <button id="exampleButton">加载示例</button>
     <a href="syntax.md" target="_blank">语法文档</a>
     <a href="operators.md" target="_blank">运算符文档</a>
-    <div id="result"></div>
+    <div id="result">
+        欢迎使用 VisiLisp，如果你感到很头大，请点击“加载示例”来学习如何求根号2.
+    </div>
 
     <!-- Modal -->
     <div id="myModal" class="modal">
@@ -27,6 +29,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id="codeShow"></div>
+            <div id="codeSource"></div>
             <div class="term_control">
                 <select id="typeSelect">
                     <option value="string">String</option>
