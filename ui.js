@@ -1,5 +1,5 @@
 const coderoot = document.getElementById('coderoot');
-
+const resultBox = document.getElementById("result");
 // 当点击按钮时执行的函数
 document.getElementById("runButton").addEventListener("click", function () {
     // 获取代码
@@ -7,10 +7,10 @@ document.getElementById("runButton").addEventListener("click", function () {
     console.log(JSON.stringify(code))
 
     // 对代码进行求值
-    var result = evaluateExpressions(code, env0);
+    let result = evaluateExpressions(code, env0);
 
     // 显示结果
-    document.getElementById("result").textContent = result;
+    resultBox.textContent = result;
 });
 
 // Modal functionality
@@ -197,7 +197,7 @@ document.getElementById("exportButton").addEventListener("click", function () {
     const code = parseFromDom(coderoot);
     console.log(JSON.stringify(code, undefined, 2));
     // to clipboard
-    var textarea = document.createElement('textarea');
+    let textarea = document.createElement('textarea');
     textarea.value = JSON.stringify(code);
     document.body.appendChild(textarea);
     textarea.select();
@@ -222,6 +222,7 @@ document.getElementById("exampleButton").addEventListener("click", function () {
     coderoot.innerHTML = "";
     renderCode(coderoot, code);
     console.log(JSON.stringify(code))
+    resultBox.textContent="现在，点击“运行”按钮"
 });
 function briefAst(ast) {
     if (Array.isArray(ast)) {
