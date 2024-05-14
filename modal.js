@@ -9,11 +9,14 @@ spanClose.onclick = function () {
 }
 const codeShow = document.getElementById('codeShow');
 const codeSource = document.getElementById('codeSource');
-const addBtn = document.getElementById('add');
+const addBtn = document.getElementById('appendButton');
 const modalInput = document.getElementById("modalInput");
-const changeBtn = document.getElementById('change');
-const replaceBtn = document.getElementById('replace');
+const changeBtn = document.getElementById('modifyButton');
+const replaceBtn = document.getElementById('replaceButton');
 const suggestionDiv = document.getElementById("suggestionDiv");
+const moveUp = document.getElementById('moveUpButton');
+const moveDown = document.getElementById('moveDownButton');
+const delBtn = document.getElementById('deleteButton');
 
 modalInput.addEventListener("focus", () => {
     // 显示备选 div
@@ -36,8 +39,7 @@ suggestionDiv.addEventListener("click", function (event) {
     modalInput.focus();
     suggestionDiv.style.display = "none";
 });
-
-coderoot.addEventListener("click", function (event) {
+function codeBlockOnClick(event) {
     const target = event.target;
     if (target === coderoot) {
         replaceBtn.style.display = "none";
@@ -98,8 +100,7 @@ coderoot.addEventListener("click", function (event) {
         target.parentNode.removeChild(target);
         hideModal();
     }
-    const moveUp = document.getElementById('moveUp');
-    const moveDown = document.getElementById('moveDown');
+
     moveUp.onclick = function () {
         // 获取当前选中的项
         const selectedItem = target;
@@ -129,7 +130,6 @@ coderoot.addEventListener("click", function (event) {
         hideModal();
     }
 
-    const delBtn = document.getElementById('delete');
     // Event listener for delete button
     delBtn.onclick = function () {
         // 获取当前选中的项
@@ -140,9 +140,10 @@ coderoot.addEventListener("click", function (event) {
 
         hideModal();
     }
+}
+coderoot.addEventListener("click", codeBlockOnClick);
+// codeShow.addEventListener("click", codeBlockOnClick);
 
-
-});
 // 函数：将字符串转换为数字、true、false 或保持原样
 function parseInput(input) {
     return input.split(/\s+/).map(item => {
