@@ -18,19 +18,18 @@ const suggestionDiv = document.getElementById("suggestionDiv");
 const moveUp = document.getElementById('moveUpButton');
 const moveDown = document.getElementById('moveDownButton');
 const delBtn = document.getElementById('deleteButton');
+const upLevelButton = document.getElementById('upLevelButton');
 
-const inputFocus=() => {
+const inputFocus = () => {
     // 显示备选 div
     suggestionDiv.style.display = "block";
 }
-const inputBlur=() => {
+const inputBlur = () => {
     // 隐藏备选 div
     setTimeout(function () {
         suggestionDiv.style.display = "none";
     }, 100);
 }
-atomInput.addEventListener("focus", inputFocus);
-atomInput.addEventListener("blur", inputBlur);
 listInput.addEventListener("focus", inputFocus);
 listInput.addEventListener("blur", inputBlur);
 
@@ -38,18 +37,29 @@ suggestionDiv.addEventListener("click", function (event) {
     console.log("click")
     const target = event.target;
     const text = target.textContent;
-    // insert to modalInput
-    modalInput.value += text;
-    modalInput.focus();
+    listInput.value += text;
+    listInput.focus();
     suggestionDiv.style.display = "none";
 });
 function codeBlockOnClick(event) {
     const target = event.target;
+    showModal(target);
+}
+function showModal(target) {
     if (target === coderoot) {
         replaceBtn.style.display = "none";
+        upLevelButton.style.display = "none";
+    } else {
+        replaceBtn.style.display = "block";
+        upLevelButton.style.display = "block";
     }
     modal.style.display = "block";
     console.log(target)
+
+    upLevelButton.onclick = () => {
+        hideModal();
+        showModal(target.parentNode);
+    }
 
     if (target.tagName === "SPAN") {
         showByClass("term_control");
@@ -173,7 +183,6 @@ function hideModal() {
     modal.style.display = "none";
     hideByClass("term_control");
     hideByClass("list_control");
-    replaceBtn.style.display = "";
 }
 
 function hideByClass(cls) {
