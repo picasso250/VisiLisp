@@ -49,6 +49,7 @@ div.ast {
 .binaryop > .ast {
     margin-left: var(--margin-value);
 }
+
 /* 控制显示顺序 */
 .binaryop > .ast:nth-child(1) {
     order: 2;
