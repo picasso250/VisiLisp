@@ -20,6 +20,7 @@ const moveDown = document.getElementById('moveDownButton');
 const delBtn = document.getElementById('deleteButton');
 const upLevelButton = document.getElementById('upLevelButton');
 const copyButton = document.getElementById("copyButton");
+const useSimplify = document.getElementById("useSimplify");
 
 copyButton.addEventListener("click", () => {
     const text = codeSource.innerText;
@@ -65,11 +66,11 @@ function showModal(target) {
         hideModal();
         showModal(target.parentNode);
     }
+    const targetCode = parseFromDom(target);
 
     if (target.tagName === "SPAN") {
         showByClass("term_control");
         codeShow.textContent = target.textContent;
-        codeSource.textContent = target.textContent;
 
         const typeSelect = document.getElementById("typeSelect");
         typeSelect.value = target.dataset.type;
@@ -85,39 +86,45 @@ function showModal(target) {
     } else {
         showByClass("list_control");
         appendBtn.onclick = function () {
-            const forAddContent = listInput.value;
-            if (forAddContent === "") {
-                target.appendChild(makeElement({ tag: "div", classes: ['ast'] }))
+            const content = listInput.value;
+            let newElem;
+            if (useSimplify.checked) {
+                newElem = expandSimple(content);
             } else {
-                const vs = parseInput(forAddContent);
-                if (vs.length === 1) {
-                    target.appendChild(renderAst(vs[0]));
-                } else {
-                    target.appendChild(renderAst(vs));
-                }
+                newElem = renderAst(JSON.parse(content));
             }
+            target.appendChild(newElem);
             hideModal();
         }
-
-        const targetCode = parseFromDom(target);
         codeShow.innerHTML = '';
         codeShow.appendChild(renderAst(briefAst(targetCode)));
-        codeSource.textContent = JSON.stringify(targetCode);
     }
+    codeSource.textContent = JSON.stringify(targetCode);
+
     replaceBtn.onclick = function () {
-        const forChangeContent = listInput.value;
-        if (forChangeContent === "") {
-            target.parentNode.insertBefore(makeElement({ tag: "div", classes: ['ast'] }), target);
+        const content = listInput.value;
+        let newElem;
+        if (useSimplify.checked) {
+            newElem = expandSimple(content);
         } else {
-            const vs = parseInput(forChangeContent);
-            if (vs.length === 1) {
-                target.parentNode.insertBefore(renderAst(vs[0]), target);
-            } else {
-                target.parentNode.insertBefore(renderAst(vs), target);
-            }
+            newElem = renderAst(JSON.parse(content));
         }
+
+        target.parentNode.insertBefore(newElem, target);
         target.parentNode.removeChild(target);
         hideModal();
+    }
+    function expandSimple(content) {
+        if (content === "") {
+            return makeElement({ tag: "div", classes: ['ast'] });
+        } else {
+            const vs = parseInput(content);
+            if (vs.length === 1) {
+                return renderAst(vs[0]);
+            } else {
+                return renderAst(vs);
+            }
+        }
     }
 
     moveUp.onclick = function () {

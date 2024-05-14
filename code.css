@@ -24,6 +24,8 @@
 }
 span.ast {
     padding: 1px;
+    min-width: 0.5rem;
+    min-height: 1rem;
 }
 div.ast {
     border: 1px solid grey;

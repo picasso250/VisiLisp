@@ -37,18 +37,15 @@ function renderAst(ast) {
     return makeElement({ tag: "div", children: divs, classes: classes });
 }
 function parseFromDom(element) {
-    const result = [];
-    Array.from(element.children).forEach(child => {
-        if (child.tagName === 'DIV') {
-            const children = parseFromDom(child);
-            result.push(children);
-        } else {
-            // 获取子节点的data-type属性
-            const type = child.dataset.type;
-            result.push(parseTyped(child.textContent.trim(), type));
-        }
-    });
-    return result;
+    if (element.tagName === 'DIV') {
+        return Array.from(element.children).map(child => {
+            return parseFromDom(child);
+        });
+    } else {
+        // 获取子节点的data-type属性
+        const type = element.dataset.type;
+        return (parseTyped(element.textContent.trim(), type));
+    }
 }
 function parseTyped(v, t) {
     // 将 type 的第一个字母转为大写
