@@ -126,4 +126,20 @@ describe("evaluateExpression", function () {
         expect(() => evaluateExpression(['>', 3], env0)).toThrowError("> requires exactly 2 arguments");
     });
 
+    it("should assign and access variables", function () {
+        let env = Object.assign({}, env0);
+    
+        // Assign a value to variable 'x'
+        evaluateExpression([':=', 'x', 5], env);
+    
+        // Assign a value to variable 'y'
+        evaluateExpression([':=', 'y', 10], env);
+    
+        // Test accessing variable 'x'
+        expect(evaluateExpression('x', env)).toEqual(5);
+    
+        // Test accessing variable 'y'
+        expect(evaluateExpression('y', env)).toEqual(10);
+    });
+
 });

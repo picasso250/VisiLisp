@@ -31,6 +31,12 @@ function evaluateExpression(expression, environment) {
         return finalValue;
     }
 
+    function doAssignment(variable, value) {
+        const finalValue = evaluateExpression(value, environment);
+        environment[variable] = finalValue;
+        return finalValue;
+    }
+
     switch (operator) {
         case 'quote':
             if (args.length !== 1) {
@@ -78,9 +84,13 @@ function evaluateExpression(expression, environment) {
                 const value = args[args.length - 1];
                 return doDefine(name, expressions, value);
             }
-        case 'comment': // 添加了 comment 关键字的处理
-            // 注释不执行任何操作，直接返回 undefined
-            return undefined;
+        case ':=':
+            if (args.length !== 2 || typeof args[0] !== 'string') {
+                throw new Error('Assignment operator := expects a variable name and an expression');
+            }
+            const variable = args[0];
+            const value = args[1];
+            return doAssignment(variable, value);
         case '.':
             if (expression.length !== 3 || typeof expression[1] !== 'string') {
                 throw new Error('Invalid syntax for accessing object property');
@@ -91,6 +101,9 @@ function evaluateExpression(expression, environment) {
                 throw new Error(`Property '${prop}' not found in object`);
             }
             return obj[prop];
+        case 'comment': // 添加了 comment 关键字的处理
+            // 注释不执行任何操作，直接返回 undefined
+            return undefined;
         default:
             const func = evaluateExpression(operator, environment);
             const funcArgs = args.map(arg => evaluateExpression(arg, environment));
