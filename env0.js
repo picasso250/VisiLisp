@@ -117,5 +117,17 @@ for (const name in env0) {
 // 不定参函数
 env0['list'] = (...args) => args;
 
-// 内置对象
+// 内置对象/函数
+env0["eval"] = eval;
+env0["Array"] = Array;
+env0["Object"] = Object;
+env0["String"] = String;
+env0["Date"] = Date;
+env0["RegExp"] = RegExp;
+env0["Function"] = Function;
+env0["Number"] = Number;
+env0["Boolean"] = Boolean;
+env0["Error"] = Error;
+env0["Promise"] = Promise;
 env0["Math"] = Math;
+env0["JSON"] = JSON;
