@@ -64,7 +64,7 @@ function evaluateExpression(expression, environment) {
             const parameters = args[0];
             const body = args[1];
             return buildLambda(parameters, body);
-        case 'define':
+        case 'def':
             if (Array.isArray(args[0])) {
                 const funcDef = args[0];
                 if (funcDef.length < 1 || typeof funcDef[0] !== 'string') {
@@ -77,7 +77,7 @@ function evaluateExpression(expression, environment) {
                 return doDefine(funcName, expressions, buildLambda(parameters, body));
             } else {
                 if (args.length < 2 || typeof args[0] !== 'string') {
-                    throw new Error('Define operator expects a variable name and one or more expressions');
+                    throw new Error('def operator expects a variable name and one or more expressions');
                 }
                 const name = args[0];
                 const expressions = args.slice(1, -1);

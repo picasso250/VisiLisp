@@ -79,7 +79,7 @@ div.ast {
     color: #1d97c0;
 }
 
-.define > *:first-child,
+.def > *:first-child,
 .cond > *:first-child,
 .if > *:first-child,
 .lamda > *:first-child,

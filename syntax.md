@@ -33,13 +33,13 @@ VisiLisp 支持以下操作符：
    - 语法: `(lambda (parameters) body)`
    - 示例: `(lambda (x y) (+ x y))` 返回一个函数，接受两个参数并返回它们的和。
 
-5. **define**: 用于定义变量或函数。
+5. **def**: 用于定义变量或函数。
    - 语法: 
-     - `(define variable value)`
-     - `(define (function-name parameters) expressions... body)`
+     - `(def variable value)`
+     - `(def (function-name parameters) expressions... body)`
    - 示例: 
-     - `(define x 5)` 定义变量 `x` 的值为 `5`.
-     - `(define (square x) (* x x))` 定义函数 `square`，接受参数 `x`，返回其平方值。
+     - `(def x 5)` 定义变量 `x` 的值为 `5`.
+     - `(def (square x) (* x x))` 定义函数 `square`，接受参数 `x`，返回其平方值。
 
 ## 函数调用
 
@@ -59,8 +59,8 @@ VisiLisp 支持以下操作符：
 - `(if (> x 0) 'positive 'negative)`
 - `(cond ((> x 0) 'positive) ((< x 0) 'negative) (else 'zero))`
 - `(lambda (x y) (+ x y))`
-- `(define x 5)`
-- `(define (square x) (* x x))`
+- `(def x 5)`
+- `(def (square x) (* x x))`
 - `(square 4)`
 
 以上是 VisiLisp 的基本语法说明，可以帮助您开始编写和理解 VisiLisp 代码。

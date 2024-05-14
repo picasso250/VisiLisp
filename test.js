@@ -46,8 +46,8 @@ describe("evaluateExpression", function () {
 
     it("should evaluate conditional expressions", function () {
         let env = Object.assign({}, env0);
-        // Define a conditional expression
-        evaluateExpression(['define', 'result',
+        // def a conditional expression
+        evaluateExpression(['def', 'result',
             ['cond',
                 [true, 1],
                 [false, 2],
@@ -73,13 +73,13 @@ describe("evaluateExpression", function () {
         expect(counter2()).toEqual(10);
     });
 
-    it("should define and access variables", function () {
+    it("should def and access variables", function () {
         let env = Object.assign({}, env0);
-        // Define a variable 'x' with value 5
-        evaluateExpression(['define', 'x', 5], env);
+        // def a variable 'x' with value 5
+        evaluateExpression(['def', 'x', 5], env);
 
-        // Define a variable 'y' with value 10
-        evaluateExpression(['define', 'y', 10], env);
+        // def a variable 'y' with value 10
+        evaluateExpression(['def', 'y', 10], env);
 
         // Test accessing variable 'x'
         expect(evaluateExpression('x', env)).toEqual(5);
@@ -90,8 +90,8 @@ describe("evaluateExpression", function () {
 
     it("should calculate factorial recursively", function () {
         let env = Object.assign({}, env0);
-        // Define factorial function recursively
-        evaluateExpression(['define', 'fact',
+        // def factorial function recursively
+        evaluateExpression(['def', 'fact',
             ['lambda', ['n'],
                 ['cond',
                     [['=', 'n', 0], 1],
