@@ -39,7 +39,6 @@ document.getElementById("loadButton").addEventListener("click", function () {
 });
 document.getElementById("exampleButton").addEventListener("click", function () {
     const code = [
-        ['comment', "使用牛顿迭代法求根号二"],
         sqrt_2_program,
         ['comment', "运行函数"],
         ['sqrt-2']
