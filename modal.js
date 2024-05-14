@@ -9,8 +9,9 @@ spanClose.onclick = function () {
 }
 const codeShow = document.getElementById('codeShow');
 const codeSource = document.getElementById('codeSource');
-const addBtn = document.getElementById('appendButton');
-const modalInput = document.getElementById("modalInput");
+const atomInput = document.getElementById("atomInput");
+const listInput = document.getElementById("listInput");
+const appendBtn = document.getElementById('appendButton');
 const changeBtn = document.getElementById('modifyButton');
 const replaceBtn = document.getElementById('replaceButton');
 const suggestionDiv = document.getElementById("suggestionDiv");
@@ -18,17 +19,20 @@ const moveUp = document.getElementById('moveUpButton');
 const moveDown = document.getElementById('moveDownButton');
 const delBtn = document.getElementById('deleteButton');
 
-modalInput.addEventListener("focus", () => {
+const inputFocus=() => {
     // 显示备选 div
     suggestionDiv.style.display = "block";
-});
-
-modalInput.addEventListener("blur", () => {
+}
+const inputBlur=() => {
     // 隐藏备选 div
     setTimeout(function () {
         suggestionDiv.style.display = "none";
     }, 100);
-});
+}
+atomInput.addEventListener("focus", inputFocus);
+atomInput.addEventListener("blur", inputBlur);
+listInput.addEventListener("focus", inputFocus);
+listInput.addEventListener("blur", inputBlur);
 
 suggestionDiv.addEventListener("click", function (event) {
     console.log("click")
@@ -54,10 +58,10 @@ function codeBlockOnClick(event) {
 
         const typeSelect = document.getElementById("typeSelect");
         typeSelect.value = target.dataset.type;
-        modalInput.value = target.textContent;
+        atomInput.value = target.textContent;
 
         changeBtn.onclick = function () {
-            const v = modalInput.value;
+            const v = atomInput.value;
             const t = typeSelect.value;
             target.textContent = parseTyped(v, t);
             target.dataset.type = t;
@@ -65,8 +69,8 @@ function codeBlockOnClick(event) {
         }
     } else {
         showByClass("list_control");
-        addBtn.onclick = function () {
-            const forAddContent = modalInput.value;
+        appendBtn.onclick = function () {
+            const forAddContent = listInput.value;
             if (forAddContent === "") {
                 target.appendChild(makeElement({ tag: "div", classes: ['ast'] }))
             } else {
@@ -86,7 +90,7 @@ function codeBlockOnClick(event) {
         codeSource.textContent = JSON.stringify(targetCode);
     }
     replaceBtn.onclick = function () {
-        const forChangeContent = modalInput.value;
+        const forChangeContent = listInput.value;
         if (forChangeContent === "") {
             target.parentNode.insertBefore(makeElement({ tag: "div", classes: ['ast'] }), target);
         } else {

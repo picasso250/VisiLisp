@@ -19,6 +19,9 @@
     width: 90%;
     border-radius: 5px;
 }
+.modal .button{
+    margin: 5px;
+}
 
 .close {
     color: #aaa;

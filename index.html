@@ -87,25 +87,30 @@
             <span class="close">&times;</span>
             <div id="codeShow"></div>
             <div id="codeSource"></div>
+            
             <div class="term_control">
                 <select id="typeSelect" title="数据类型">
                     <option value="string">String</option>
                     <option value="number">Number</option>
                     <option value="boolean">Boolean</option>
                 </select>
+                <input type="text" id="atomInput" placeholder="完整表达式或者简写">
+                <button class="button" type="button" id="modifyButton">修改</button>
             </div>
             <div>
-                <input type="text" id="modalInput" placeholder="完整表达式或者简写">
-                <button class="button" type="button" id="modifyButton">修改</button>
+                <input type="checkbox" id="useSimplify" checked>
+                <label for="useSimplify">使用简写</label>
+                <input type="text" id="listInput" placeholder="完整表达式或者简写">
                 <button class="button" type="button" id="replaceButton">替换</button>
+            </div>
+            <div class="list_control">
                 <button class="button" type="button" id="appendButton">追加</button>
-                <br>
-                <div id="suggestionDiv" style="display: none;">
-                    <div>def</div>
-                    <div>cond</div>
-                    <div>lambda</div>
-                    <div>quote</div>
-                </div>
+            </div>
+            <div id="suggestionDiv" style="display: none;">
+                <div>def</div>
+                <div>cond</div>
+                <div>lambda</div>
+                <div>quote</div>
             </div>
             <div>
                 <button class="button" type="button" id="moveUpButton">上移</button>
