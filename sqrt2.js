@@ -16,7 +16,7 @@ const sqrt_2_program = ['define', ['sqrt-2'],
     ['comment', '绝对值'],
     ['define', ['abs', 'x'],
         ['comment', '这里使用js内置的Math对象'],
-        [['.', 'Math', ['quote', 'abs']], 'x']
+        [['.', 'Math',  'abs'], 'x']
     ],
     ['sqrt-iter', 1.0]
 ];

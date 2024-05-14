@@ -81,6 +81,16 @@ function evaluateExpression(expression, environment) {
         case 'comment': // 添加了 comment 关键字的处理
             // 注释不执行任何操作，直接返回 undefined
             return undefined;
+        case '.':
+            if (expression.length !== 3 || typeof expression[1] !== 'string') {
+                throw new Error('Invalid syntax for accessing object property');
+            }
+            const obj = evaluateExpression(expression[1], environment);
+            const prop = expression[2];
+            if (typeof obj !== 'object' || obj === null || !obj.hasOwnProperty(prop)) {
+                throw new Error(`Property '${prop}' not found in object`);
+            }
+            return obj[prop];
         default:
             const func = evaluateExpression(operator, environment);
             const funcArgs = args.map(arg => evaluateExpression(arg, environment));

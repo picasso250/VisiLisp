@@ -4,6 +4,7 @@ for (let op in env0) {
         binaryOperators.add(op);
     }
 }
+binaryOperators.add('.');
 
 function renderCode(coderoot, code) {
     coderoot.innerHTML = "";

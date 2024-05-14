@@ -25,7 +25,6 @@ const env0 = {
     'instanceof': (a, b) => a instanceof b, // Instanceof operator
     'in': (a, b) => a in b, // In operator
     'delete': (a, b) => delete a[b], // Delete operator
-    '.': (a, b) => a[b],
 };
 
 // Add Lisp functions
