@@ -19,7 +19,7 @@
     width: 90%;
     border-radius: 5px;
 }
-.modal .button{
+.modal .button {
     margin: 5px;
 }
 
@@ -42,4 +42,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+}
+.code-src-wrap {
+    display: flex;
+}
+.code-src-wrap .button {
+    padding: 0;
+    margin: 0;
+    width: 32px;
+    height: 32px;
+    color: gray;
+}
+.code-src-wrap .button:hover {
+    color: black;
 }

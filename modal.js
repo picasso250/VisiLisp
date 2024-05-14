@@ -19,7 +19,12 @@ const moveUp = document.getElementById('moveUpButton');
 const moveDown = document.getElementById('moveDownButton');
 const delBtn = document.getElementById('deleteButton');
 const upLevelButton = document.getElementById('upLevelButton');
+const copyButton = document.getElementById("copyButton");
 
+copyButton.addEventListener("click", () => {
+    const text = codeSource.innerText;
+    navigator.clipboard.writeText(text);
+});
 const inputFocus = () => {
     // 显示备选 div
     suggestionDiv.style.display = "block";
