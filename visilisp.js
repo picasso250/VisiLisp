@@ -101,8 +101,47 @@ function evaluateExpression(expression, environment) {
                 throw new Error(`Property '${prop}' not found in object`);
             }
             return obj[prop];
-        case 'comment': // 添加了 comment 关键字的处理
-            // 注释不执行任何操作，直接返回 undefined
+        case 'of': // Added case for 'of' operator
+            if (args.length !== 2) {
+                throw new Error('of operator expects exactly 2 arguments');
+            }
+            const targetObj = evaluateExpression(args[1], environment);
+            const targetProp = evaluateExpression(args[0], environment);
+            if (typeof targetObj !== 'object' || targetObj === null || !targetObj.hasOwnProperty(targetProp)) {
+                throw new Error(`Property '${targetProp}' not found in object`);
+            }
+            return targetObj[targetProp];
+        case 'object': // Added case for 'object' operator
+            const newObj = {};
+            for (let i = 0; i < args.length; i++) {
+                const pair = args[i];
+                if (!Array.isArray(pair) || pair.length !== 2) {
+                    throw new Error('object operator expects pairs of key and value');
+                }
+                const key = evaluateExpression(pair[0], environment);
+                const value = evaluateExpression(pair[1], environment);
+                if (typeof key !== 'string') {
+                    throw new Error('Object keys must be strings');
+                }
+                newObj[key] = value;
+            }
+            return newObj;
+        case 'updateprop': // Added case for 'updateprop' operator
+            if (args.length !== 3) {
+                throw new Error('updateprop operator expects exactly 3 arguments');
+            }
+            const updateObj = evaluateExpression(args[0], environment);
+            const updateKey = evaluateExpression(args[1], environment);
+            const updateValue = evaluateExpression(args[2], environment);
+            if (typeof updateObj !== 'object' || updateObj === null) {
+                throw new Error('First argument to updateprop must be an object');
+            }
+            if (typeof updateKey !== 'string') {
+                throw new Error('Second argument to updateprop must be a string');
+            }
+            updateObj[updateKey] = updateValue;
+            return updateValue;
+        case 'comment': // Added case for 'comment' operator
             return undefined;
         default:
             const func = evaluateExpression(operator, environment);
