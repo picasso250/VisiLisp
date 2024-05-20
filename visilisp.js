@@ -1,5 +1,4 @@
 function evaluateExpression(expression, environment) {
-
     if (!Array.isArray(expression)) {
         if (typeof expression === 'string') {
             if (environment.hasOwnProperty(expression)) {
@@ -143,6 +142,21 @@ function evaluateExpression(expression, environment) {
             return updateValue;
         case 'comment': // Added case for 'comment' operator
             return undefined;
+        case 'let': // Added case for 'let' operator
+            if (args.length < 2 || !Array.isArray(args[0])) {
+                throw new Error('let operator expects a list of bindings and a body expression');
+            }
+            const letBody = args.pop();
+            const bindings = args;
+            const letEnvironment = { ...environment };
+            bindings.forEach(binding => {
+                if (!Array.isArray(binding) || binding.length !== 2 || typeof binding[0] !== 'string') {
+                    throw new Error('Each binding must be a pair with a string as the first element');
+                }
+                const [varName, varValue] = binding;
+                letEnvironment[varName] = evaluateExpression(varValue, environment);
+            });
+            return evaluateExpression(letBody, letEnvironment);
         default:
             const func = evaluateExpression(operator, environment);
             const funcArgs = args.map(arg => evaluateExpression(arg, environment));
