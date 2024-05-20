@@ -8,9 +8,15 @@ document.getElementById("runButton").addEventListener("click", function () {
 
     // 对代码进行求值
     let result = evaluateExpressions(code, env0);
+    console.log("result: " + JSON.stringify(result));
 
     // 显示结果
-    resultBox.textContent = result;
+    if (Array.isArray(result)) {
+        resultBox.innerHTML = "";
+        renderCode(resultBox, result);
+    } else {
+        resultBox.textContent = result;
+    }
 });
 
 document.getElementById("exportButton").addEventListener("click", function () {
