@@ -24,18 +24,38 @@ document.getElementById("exportButton").addEventListener("click", function () {
     document.execCommand("copy");
     document.body.removeChild(textarea);
 });
+const fileNameInput = document.querySelector("[name=fileName]");
 document.getElementById("saveButton").addEventListener("click", function () {
     const code = parseFromDom(coderoot);
-    localStorage.setItem("code", JSON.stringify(code));
+    localStorage.setItem("code_" + fileNameInput.value, JSON.stringify(code));
 });
+const fileList = document.getElementById("fileList");
+const modalFileList = document.getElementById("modalFileList");
 document.getElementById("loadButton").addEventListener("click", function () {
-    try {
-        const code = JSON.parse(localStorage.getItem("code"));
-        coderoot.innerHTML = "";
-        renderCode(coderoot, code);
-    } catch (e) {
-        console.error("Failed to load from local storage");
-    }
+    modalFileList.style.display = "block";
+    // load file list from local storage
+    fileList.innerHTML = "";
+    let files = Object.keys(localStorage).filter(function (key) { return key.startsWith("code_"); });
+    files.forEach(function (file, index) {
+        const fileName = /^code_(.+)/.exec(file)[1];
+        fileList.appendChild(makeElement({
+            tag: "li",
+            text: fileName,
+            events: {
+                "click": () => {
+                    try {
+                        fileNameInput.value = fileName;
+                        modalFileList.style.display = "none";
+                        const code = JSON.parse(localStorage.getItem(file));
+                        coderoot.innerHTML = "";
+                        renderCode(coderoot, code);
+                    } catch (e) {
+                        console.error("Failed to load from local storage");
+                    }
+                }
+            }
+        }));
+    });
 });
 document.getElementById("exampleButton").addEventListener("click", function () {
     const code = [

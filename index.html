@@ -65,6 +65,11 @@
 </head>
 
 <body>
+    <div>
+        <input type="text" name="fileName">
+        <button class="button" id="saveButton">保存到本地</button>
+        <button class="button" id="loadButton">从本地加载</button>
+    </div>
     <div id="coderoot">
     </div>
     <div id="result">
@@ -73,8 +78,6 @@
     <div class="controls">
         <button class="button special-button" id="runButton">运行</button>
         <button class="button" id="exportButton">导出/复制</button>
-        <button class="button" id="saveButton">保存到本地</button>
-        <button class="button" id="loadButton">从本地加载</button>
         <button class="button" id="exampleButton">加载示例</button>
         <a href="syntax.md" target="_blank">语法文档</a>
         <a href="operators.md" target="_blank">运算符文档</a>
@@ -131,6 +134,14 @@
             <div>
                 <button class="button" type="button" id="deleteButton">删除</button>
             </div>
+        </div>
+    </div>
+    <div id="modalFileList" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>文件列表</h2>
+            <ul id="fileList"></ul>
         </div>
     </div>
 

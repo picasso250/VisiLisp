@@ -3,10 +3,13 @@
 const modal = document.getElementById("myModal");
 const termContrl = document.querySelector(".term_control");
 // When the user clicks on <span> (x), close the modal
-const spanClose = document.getElementsByClassName("close")[0];
-spanClose.onclick = function () {
-    hideModal();
-}
+const spanClose = document.getElementsByClassName("close");
+Array.from(spanClose).forEach((e) => {
+    e.onclick = function () {
+        Array.from(document.getElementsByClassName("modal")).forEach(e => e.style.display = "none");
+        hideModal();
+    }
+});
 const codeShow = document.getElementById('codeShow');
 const codeSource = document.getElementById('codeSource');
 const atomInput = document.getElementById("atomInput");
