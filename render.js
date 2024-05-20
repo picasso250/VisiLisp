@@ -5,6 +5,7 @@ for (let op in env0) {
     }
 }
 binaryOperators.add('.');
+binaryOperators.add('of');
 
 function renderCode(coderoot, code) {
     coderoot.innerHTML = "";

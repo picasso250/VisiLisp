@@ -11,12 +11,8 @@ document.getElementById("runButton").addEventListener("click", function () {
     console.log("result: " + JSON.stringify(result));
 
     // 显示结果
-    if (Array.isArray(result)) {
-        resultBox.innerHTML = "";
-        renderCode(resultBox, result);
-    } else {
-        resultBox.textContent = result;
-    }
+    resultBox.innerHTML = "";
+    renderCode(resultBox, [result]);
 });
 
 document.getElementById("exportButton").addEventListener("click", function () {
